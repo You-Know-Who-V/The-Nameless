@@ -156,7 +156,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             userObj.put("userName", currentUserName);
                             userObj.put("userId", currentUser.getUid());
 
-                            collectionReference.add(userObj)
+                            db.collection("Users").add(userObj)
                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                     @Override
                                     public void onSuccess(DocumentReference documentReference) {
@@ -183,7 +183,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-
+                                    Toast.makeText(SignUpActivity.this, "Upload Failed", Toast.LENGTH_LONG).show();
                                 }
                             });
 
