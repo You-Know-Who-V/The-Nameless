@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">The Nameless</string>
+    <string name="hello_text2">Let\'s get started...</string>
+    <string name="hello_text3">Hello there,\nwelcome back</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login_text">Sign In</string>
+    <string name="new_here">New here?</string>
+    <string name="sign_up_instead">Sign Up instead</string>
+    <string name="get_on_board">Get on Board</string>
+    <string name="name_hint">Name</string>
+    <string name="confirmPassword_hint">Confirm Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="i_am_already_a_member">I am already a member</string>
+</resources>

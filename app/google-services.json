@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "87619921637",
+    "firebase_url": "https://the-nameless-a35bd.firebaseio.com",
+    "project_id": "the-nameless-a35bd",
+    "storage_bucket": "the-nameless-a35bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87619921637:android:5a8d4ad312e1c79706160c",
+        "android_client_info": {
+          "package_name": "com.example.thenameless"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "87619921637-g15qaevaikao4ga5pug8q4fee31ttj39.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBSk3Y9S7W1U7eRZ0g2EeZWIp1dVLEjQY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "87619921637-g15qaevaikao4ga5pug8q4fee31ttj39.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
