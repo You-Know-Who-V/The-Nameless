@@ -187,7 +187,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 }
                             });
 
-                            startActivity(new Intent(SignUpActivity.this, HomePage.class));
+                            //startActivity(new Intent(SignUpActivity.this, HomePage.class));
                             //finish();
                         }
                     }
