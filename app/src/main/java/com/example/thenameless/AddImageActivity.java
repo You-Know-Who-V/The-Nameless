@@ -2,11 +2,16 @@ package com.example.thenameless;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -102,6 +107,21 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    public void getPhoto()
+    {
+        Intent intent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent,GET_IMAGE_CODE);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void chooseimg(View view) {
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        } else {
+            getPhoto();
+        }
+    }
+
     @Override
     public void onClick(View view) {
 
@@ -110,11 +130,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.image_fab:
                 //add new image
                 if(imageUriList.size() <= 3) {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.setType("images/*");
-
-                    startActivityForResult(intent, GET_IMAGE_CODE);
+                    chooseimg(view);
                 }
                 else{
                     Toast.makeText(this, "Reached maximum images!", Toast.LENGTH_SHORT).show();
@@ -182,7 +198,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GET_IMAGE_CODE && resultCode == RESULT_OK){
+        if(requestCode == GET_IMAGE_CODE && resultCode == RESULT_OK && data!=null){
 
             if(data != null){
 
@@ -199,7 +215,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
                     prevImage.setVisibility(View.VISIBLE);
                 }
 
-                imageView.setImageURI(imageUriList.get(currentImageIndex));
+                imageView.setImageURI(imageUri);
 
             }
         }
