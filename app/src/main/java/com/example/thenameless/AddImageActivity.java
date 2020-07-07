@@ -207,17 +207,23 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
 
     private void addImageToStorage(Uri imageUri) {
 
-        StorageReference ref = storageReference.child("images")
-                .child("image_" + Timestamp.now().getSeconds() + ".png");
+        final StorageReference ref = storageReference.child("images")
+                .child("image_" + Timestamp.now().getSeconds());
 
         ref.putFile(imageUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        String imageUrl = taskSnapshot.toString();
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
 
-                        imageUrlList.add(imageUrl);
+                                String imageUrl = uri.toString();
+
+                                imageUrlList.add(imageUrl);
+                            }
+                        });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

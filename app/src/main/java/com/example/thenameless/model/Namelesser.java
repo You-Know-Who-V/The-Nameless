@@ -1,6 +1,8 @@
 package com.example.thenameless.model;
 
-public class Namelesser {
+import android.app.Application;
+
+public class Namelesser extends Application {
 
     private String userName;
     private String userId;
