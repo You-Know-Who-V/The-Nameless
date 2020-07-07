@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -50,21 +51,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.login_signIn_button:
                 //login into acc.
-                mAuth.signInWithEmailAndPassword(emailEditText.getText().toString(),passwordEditText.getText().toString())
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful())
-                            {
-                                startActivity(new Intent(LoginActivity.this,HomePage.class));
-                            }
-                            else
-                            {
-                                Toast.makeText(LoginActivity.this, "Login Failed!!! Try Again", Toast.LENGTH_SHORT).show();
-                                passwordEditText.setText("");
-                            }
-                        }
-                    });
+                if(!TextUtils.isEmpty(emailEditText.getText().toString().trim())
+                        && !TextUtils.isEmpty(passwordEditText.getText().toString().trim())) {
+
+                    accountLogIn(emailEditText.getText().toString().trim(),
+                                    passwordEditText.getText().toString().trim());
+                }
+                else{
+                    Toast.makeText(this, "Empty Fields Not Allowed!", Toast.LENGTH_SHORT).show();
+                }
 
                 break;
             case R.id.login_signUp_Text:
@@ -74,5 +69,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
 
+    }
+
+    private void accountLogIn(String email, String password) {
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            startActivity(new Intent(LoginActivity.this, HomePage.class));
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Login Failed!!! Try Again", Toast.LENGTH_SHORT).show();
+                            passwordEditText.setText("");
+                        }
+                    }
+                });
     }
 }
