@@ -1,0 +1,230 @@
+package com.example.thenameless;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.example.thenameless.model.Namelesser;
+import com.example.thenameless.model.ProductDetails;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class AddImageActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final int GET_IMAGE_CODE = 1111;
+    private static final String TAG = "Add Image Activity";
+    private ImageView imageView;
+    private FloatingActionButton fab;
+    private Button nextButton;
+    private ImageButton prevImage,nextImage;
+
+    private int currentImageIndex = 0;
+
+    private String currentUserName;
+    private String currentUserId;
+
+    private List<Uri> imageUriList = new ArrayList<>();
+    private List<String> imageUrlList = new ArrayList<>();
+
+    private Bundle bundle;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseUser currentUser;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private CollectionReference collectionReference = db.collection("productDetails");
+
+    private StorageReference storageReference;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_image);
+
+        currentUserName = Namelesser.getInstance().getUserName();
+        currentUserId = Namelesser.getInstance().getUserId();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        bundle = getIntent().getExtras();
+
+        imageView = findViewById(R.id.image_imageView);
+        fab = findViewById(R.id.image_fab);
+        nextButton = findViewById(R.id.image_next_button);
+        prevImage = findViewById(R.id.image_previousImage_button);
+        nextImage = findViewById(R.id.image_nextImage_button);
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                currentUser = firebaseAuth.getCurrentUser();
+
+                if(currentUser != null){
+
+                }
+                else{
+
+                }
+
+            }
+        };
+
+        fab.setOnClickListener(this);
+        nextButton.setOnClickListener(this);
+        prevImage.setOnClickListener(this);
+        nextImage.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+
+            case R.id.image_fab:
+                //add new image
+                if(imageUriList.size() <= 3) {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    intent.setType("images/*");
+
+                    startActivityForResult(intent, GET_IMAGE_CODE);
+                }
+                else{
+                    Toast.makeText(this, "Reached maximum images!", Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+            case R.id.image_next_button:
+                //goto next PriceActivity
+
+                if(imageUriList.size() != 0){
+
+                    Intent intent = new Intent(AddImageActivity.this, AddPriceActivity.class);
+
+                    intent.putExtra("userName",currentUserName);
+                    intent.putExtra("userId",currentUserId);
+                    intent.putExtra("title",bundle.getString("title"));
+                    intent.putExtra("description",bundle.getString("description"));
+
+                    for(int i=0;i<imageUrlList.size();i++){
+                        intent.putExtra("image" + (i+1) + "_url", imageUrlList.get(i));
+                    }
+
+                    startActivity(intent);
+
+                }
+                else{
+                    Toast.makeText(this, "Atleast 1 image required!", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.image_nextImage_button:
+                //show next Image
+
+                currentImageIndex++;
+
+                if(currentImageIndex == imageUriList.size()-1){
+                    nextImage.setVisibility(View.GONE);
+                }
+
+                imageView.setImageURI(imageUriList.get(currentImageIndex));
+                break;
+            case R.id.image_previousImage_button:
+                //show previous Image
+
+                currentImageIndex--;
+
+                if(currentImageIndex == 0){
+                    prevImage.setVisibility(View.GONE);
+                }
+
+                imageView.setImageURI(imageUriList.get(currentImageIndex));
+                break;
+
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        currentUser = firebaseAuth.getCurrentUser();
+        firebaseAuth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == GET_IMAGE_CODE && resultCode == RESULT_OK){
+
+            if(data != null){
+
+                Uri imageUri = data.getData();
+
+                imageUriList.add(imageUri);
+
+                addImageToStorage(imageUri);
+
+                if(currentImageIndex < imageUriList.size()){
+                    nextImage.setVisibility(View.VISIBLE);
+                }
+                if(currentImageIndex > 0 ){
+                    prevImage.setVisibility(View.VISIBLE);
+                }
+
+                imageView.setImageURI(imageUriList.get(currentImageIndex));
+
+            }
+        }
+    }
+
+    private void addImageToStorage(Uri imageUri) {
+
+        StorageReference ref = storageReference.child("images")
+                .child("image_" + Timestamp.now().getSeconds() + ".png");
+
+        ref.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        String imageUrl = taskSnapshot.toString();
+
+                        imageUrlList.add(imageUrl);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Log.d(TAG, "onFailure: " + e.getMessage());
+            }
+        });
+    }
+}

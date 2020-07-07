@@ -11,7 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HomePage"></activity>
+        <activity android:name=".AddPriceActivity"></activity>
+        <activity android:name=".AddImageActivity" />
+        <activity android:name=".AddDetailsActivity" />
+        <activity android:name=".ProductTypesListActivity" />
+        <activity android:name=".HomePage" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity">

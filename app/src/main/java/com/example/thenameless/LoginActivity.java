@@ -54,6 +54,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(!TextUtils.isEmpty(emailEditText.getText().toString().trim())
                         && !TextUtils.isEmpty(passwordEditText.getText().toString().trim())) {
 
+                    progressBar.setVisibility(View.VISIBLE);
+
                     accountLogIn(emailEditText.getText().toString().trim(),
                                     passwordEditText.getText().toString().trim());
                 }
@@ -78,9 +80,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                            progressBar.setVisibility(View.INVISIBLE);
+
                             startActivity(new Intent(LoginActivity.this, HomePage.class));
                         } else {
+
+                            progressBar.setVisibility(View.INVISIBLE);
+
                             Toast.makeText(LoginActivity.this, "Login Failed!!! Try Again", Toast.LENGTH_SHORT).show();
+
                             passwordEditText.setText("");
                         }
                     }

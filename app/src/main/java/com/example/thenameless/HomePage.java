@@ -2,18 +2,31 @@ package com.example.thenameless;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
-public class    HomePage extends AppCompatActivity {
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+public class HomePage extends AppCompatActivity implements View.OnClickListener {
+
+    private FloatingActionButton fab;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        fab = findViewById(R.id.home_fab);
+        recyclerView = findViewById(R.id.home_recyclerView);
+
+        fab.setOnClickListener(this);
     }
 
     @Override
@@ -32,5 +45,17 @@ public class    HomePage extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+
+            case R.id.home_fab:
+                //add new item
+                startActivity(new Intent(HomePage.this, ProductTypesListActivity.class));
+                break;
+        }
     }
 }

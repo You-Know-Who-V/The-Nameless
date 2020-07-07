@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="6dp"
+    tools:context=".AddDetailsActivity">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/ad_title"
+        android:padding="8dp"
+        android:textSize="20sp"
+        android:maxLines="2"
+        android:id="@+id/detail_title"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:hint="@string/describe_what_are_you_selling"
+        android:textSize="20sp"
+        android:maxLines="10"
+        android:id="@+id/detail_description"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/next"
+        android:elevation="10dp"
+        android:layout_marginTop="400dp"
+        android:id="@+id/detail_next_button"/>
+
+
+</LinearLayout>

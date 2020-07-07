@@ -13,4 +13,8 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
     <string name="i_am_already_a_member">I am already a member</string>
+    <string name="ad_title">Ad title</string>
+    <string name="describe_what_are_you_selling">Describe what are you selling</string>
+    <string name="next">Next</string>
+    <string name="price">Price</string>
 </resources>
