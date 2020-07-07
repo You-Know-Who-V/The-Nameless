@@ -10,7 +10,7 @@ public class ProductDetails {
     private int price;
     private String userName;
     private String description;
-    private Timestamp timeAdded;
+    private String timeAdded;
     private String image1_url;
     private String image2_url;
     private String image3_url;
@@ -20,7 +20,7 @@ public class ProductDetails {
 
     }
 
-    public ProductDetails(String type, String title, String userId, int price, String userName, String description, Timestamp timeAdded, String image1_url, String image2_url, String image3_url, String image4_url) {
+    public ProductDetails(String type, String title, String userId, int price, String userName, String description, String timeAdded, String image1_url, String image2_url, String image3_url, String image4_url) {
         this.type = type;
         this.title = title;
         this.userId = userId;
@@ -82,11 +82,11 @@ public class ProductDetails {
         this.description = description;
     }
 
-    public Timestamp getTimeAdded() {
+    public String getTimeAdded() {
         return timeAdded;
     }
 
-    public void setTimeAdded(Timestamp timeAdded) {
+    public void setTimeAdded(String timeAdded) {
         this.timeAdded = timeAdded;
     }
 

@@ -15,10 +15,14 @@ public class AddDetailsActivity extends AppCompatActivity {
     private EditText titleEditText,descriptionEditText;
     private Button nextButton;
 
+    private Bundle bundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_details);
+
+        bundle = getIntent().getExtras();
 
         titleEditText = findViewById(R.id.detail_title);
         descriptionEditText = findViewById(R.id.detail_description);
@@ -35,6 +39,7 @@ public class AddDetailsActivity extends AppCompatActivity {
 
                         intent.putExtra("title", titleEditText.getText().toString().trim());
                         intent.putExtra("description", descriptionEditText.getText().toString().trim());
+                        intent.putExtra("type",bundle.getString("type"));
 
                         startActivity(intent);
                 }

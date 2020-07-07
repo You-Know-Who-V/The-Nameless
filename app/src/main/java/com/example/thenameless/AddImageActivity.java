@@ -146,11 +146,13 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
 
                     intent.putExtra("userName",currentUserName);
                     intent.putExtra("userId",currentUserId);
+                    intent.putExtra("type",bundle.getString("type"));
                     intent.putExtra("title",bundle.getString("title"));
                     intent.putExtra("description",bundle.getString("description"));
 
-                    for(int i=0;i<imageUrlList.size();i++){
-                        intent.putExtra("image" + (i+1) + "_url", imageUrlList.get(i));
+                    for(int i=1;i<=imageUrlList.size();i++){
+                        Toast.makeText(this, "image" + i + "_url", Toast.LENGTH_SHORT).show();
+                        intent.putExtra("image" + i + "_url", imageUrlList.get(i-1));
                     }
 
                     startActivity(intent);
@@ -168,6 +170,9 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
                 if(currentImageIndex == imageUriList.size()-1){
                     nextImage.setVisibility(View.GONE);
                 }
+                if(currentImageIndex > 0){
+                    prevImage.setVisibility(View.VISIBLE);
+                }
 
                 imageView.setImageURI(imageUriList.get(currentImageIndex));
                 break;
@@ -178,6 +183,9 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
 
                 if(currentImageIndex == 0){
                     prevImage.setVisibility(View.GONE);
+                }
+                if(currentImageIndex < imageUriList.size()-1){
+                    nextImage.setVisibility(View.VISIBLE);
                 }
 
                 imageView.setImageURI(imageUriList.get(currentImageIndex));
@@ -198,7 +206,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GET_IMAGE_CODE && resultCode == RESULT_OK && data!=null){
+        if(requestCode == GET_IMAGE_CODE && resultCode == RESULT_OK){
 
             if(data != null){
 
@@ -208,14 +216,14 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
 
                 addImageToStorage(imageUri);
 
-                if(currentImageIndex < imageUriList.size()){
+                if(currentImageIndex < imageUriList.size()-1){
                     nextImage.setVisibility(View.VISIBLE);
                 }
                 if(currentImageIndex > 0 ){
                     prevImage.setVisibility(View.VISIBLE);
                 }
 
-                imageView.setImageURI(imageUri);
+                imageView.setImageURI(imageUriList.get(currentImageIndex));
 
             }
         }
@@ -238,6 +246,13 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
                                 String imageUrl = uri.toString();
 
                                 imageUrlList.add(imageUrl);
+
+                                Toast.makeText(AddImageActivity.this, imageUrl, Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, "onFailure: " + e.getMessage());
                             }
                         });
                     }

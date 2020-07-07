@@ -1,6 +1,7 @@
 package com.example.thenameless;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,10 +15,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.thenameless.model.Namelesser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -26,7 +35,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button signInButton;
     private TextView signUpButton;
     private ProgressBar progressBar;
+
     static FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseUser currentUser;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private CollectionReference collectionReference = db.collection("Users");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +56,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         signInButton = findViewById(R.id.login_signIn_button);
         signUpButton = findViewById(R.id.login_signUp_Text);
         progressBar = findViewById(R.id.login_progressBar);
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                currentUser = firebaseAuth.getCurrentUser();
+
+                if(currentUser != null){
+
+                }
+                else{
+
+                }
+            }
+        };
 
         signUpButton.setOnClickListener(this);
         signInButton.setOnClickListener(this);
@@ -83,7 +115,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                             progressBar.setVisibility(View.INVISIBLE);
 
-                            startActivity(new Intent(LoginActivity.this, HomePage.class));
+                            currentUser = mAuth.getCurrentUser();
+
+                            collectionReference.whereEqualTo("userId",currentUser.getUid())
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                                            Namelesser namelesser = Namelesser.getInstance();
+
+                                            for(QueryDocumentSnapshot snapshot : queryDocumentSnapshots){
+
+                                                namelesser.setUserId(currentUser.getUid());
+                                                namelesser.setUserName(snapshot.getString("userName"));
+
+                                            }
+                                            //Toast.makeText(LoginActivity.this, "Username: "+ namelesser.getUserName(), Toast.LENGTH_SHORT).show();
+
+                                            startActivity(new Intent(LoginActivity.this, HomePage.class));
+                                        }
+                                    });
                         } else {
 
                             progressBar.setVisibility(View.INVISIBLE);
@@ -94,5 +145,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        currentUser = mAuth.getCurrentUser();
+        mAuth.addAuthStateListener(authStateListener);
     }
 }

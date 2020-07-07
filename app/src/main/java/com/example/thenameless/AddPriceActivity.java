@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.thenameless.model.Namelesser;
 import com.example.thenameless.model.ProductDetails;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -22,8 +24,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AddPriceActivity extends AppCompatActivity {
 
@@ -31,6 +37,9 @@ public class AddPriceActivity extends AppCompatActivity {
     private EditText priceEditText;
 
     private Bundle bundle;
+
+    private String currentUserName;
+    private String currentUserId;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -48,6 +57,9 @@ public class AddPriceActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         bundle = getIntent().getExtras();
+
+        currentUserName = Namelesser.getInstance().getUserName();
+        currentUserId = Namelesser.getInstance().getUserName();
 
         priceEditText = findViewById(R.id.price_editText);
         nextButton = findViewById(R.id.price_next_button);
@@ -76,12 +88,14 @@ public class AddPriceActivity extends AppCompatActivity {
 
                     ProductDetails productDetails = new ProductDetails();
 
-                    productDetails.setUserName(bundle.getString("userName"));
+                    productDetails.setUserName(currentUserName);
                     productDetails.setTitle(bundle.getString("title"));
                     productDetails.setDescription(bundle.getString("description"));
-                    productDetails.setUserId(bundle.getString("userId"));
+                    productDetails.setUserId(currentUserId);
                     productDetails.setPrice(Integer.parseInt(priceEditText.getText().toString()));
                     productDetails.setImage1_url(bundle.getString("image1_url"));
+                    productDetails.setType(bundle.getString("type"));
+                    productDetails.setTimeAdded(getCurrentDate());
 
                     if(bundle.containsKey("image2_url"))
                         productDetails.setImage2_url(bundle.getString("image2_url"));
@@ -113,6 +127,16 @@ public class AddPriceActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private String getCurrentDate() {
+
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+
+        return  formattedDate;
     }
 
 
