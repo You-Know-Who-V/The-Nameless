@@ -2,6 +2,7 @@ package com.example.thenameless;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -31,18 +33,51 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater=getMenuInflater();
-        menuInflater.inflate(R.menu.home_page_menu,menu);
+        getMenuInflater().inflate(R.menu.home_page_menu,menu);
+        MenuCompat.setGroupDividerEnabled(menu, true);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
+        switch(item.getItemId())
+        {
+            case R.id.logout:LoginActivity.mAuth.signOut();
+                            finish();
+                            break;
+
+            case R.id.cart: //Filter search result to show only books
+                Toast.makeText(this, "Cart Selected", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.my_acc:   //Go to Account Settings
+                Toast.makeText(this, "My Account Selected", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.books: //Filter search result to show only books
+                Toast.makeText(this, "Books Selected", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.lab_coat: //Filter search result to show only Lab Coats
+                Toast.makeText(this, "Lab Coat Selected", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.instrument: //Filter search result to show only Instrument
+                Toast.makeText(this, "Instrument Selected", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.sports: //Filter search result to show only Sports
+                Toast.makeText(this, "Sports Selected", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.other_category: //Filter search result to show only books
+                Toast.makeText(this, "Other Category Selected", Toast.LENGTH_SHORT).show();
+                break;
+        }
         if(item.getItemId()==R.id.logout)
         {
-            LoginActivity.mAuth.signOut();
-            finish();
+
         }
         return super.onOptionsItemSelected(item);
     }
