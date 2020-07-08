@@ -1,34 +1,121 @@
 package com.example.thenameless;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.thenameless.model.ProductDetails;
+import com.example.thenameless.view.RecyclerViewHome;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomePage extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "Home Page";
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private FirebaseUser currentUser;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private CollectionReference collectionReference = db.collection("productDetails");
+
+    private RecyclerViewHome recyclerViewHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
 
-        fab = findViewById(R.id.home_fab);
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                currentUser = firebaseAuth.getCurrentUser();
+
+                if(currentUser != null){
+
+                }
+                else{
+
+                }
+            }
+        };
+
         recyclerView = findViewById(R.id.home_recyclerView);
+        recyclerView.setHasFixedSize(true);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
+        Toast.makeText(this, String.valueOf(getAllProducts().size()), Toast.LENGTH_SHORT).show();
+
+        recyclerViewHome = new RecyclerViewHome(this, getAllProducts());
+        recyclerView.setAdapter(recyclerViewHome);
+
+        fab = findViewById(R.id.home_fab);
 
         fab.setOnClickListener(this);
+    }
+
+    private List<ProductDetails> getAllProducts() {
+
+        final List<ProductDetails> list = new ArrayList<>();
+
+        collectionReference.get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()) {
+                        for (QueryDocumentSnapshot documentSnapshot: task.getResult()) {
+
+                            ProductDetails productDetails = new ProductDetails();
+
+                            productDetails.setTimeAdded(documentSnapshot.getString("timeAdded"));
+                            productDetails.setPrice(Integer.parseInt(documentSnapshot.get("price").toString()));
+                            productDetails.setTitle(documentSnapshot.getString("title"));
+                            productDetails.setImage1_url(documentSnapshot.getString("image1_url"));
+                            productDetails.setType(documentSnapshot.getString("type"));
+
+                            list.add(productDetails);
+                        }
+                    }
+                }
+            });
+
+        //Toast.makeText(HomePage.this, list.size(), Toast.LENGTH_SHORT).show();
+
+        return list;
     }
 
     @Override
@@ -92,5 +179,15 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                 startActivity(new Intent(HomePage.this, ProductTypesListActivity.class));
                 break;
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        currentUser = firebaseAuth.getCurrentUser();
+        firebaseAuth.addAuthStateListener(authStateListener);
+
+
     }
 }

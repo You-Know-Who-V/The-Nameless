@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.thenameless.model.Namelesser;
@@ -37,6 +38,8 @@ public class AddPriceActivity extends AppCompatActivity {
 
     private Button nextButton;
     private EditText priceEditText;
+
+    private ProgressBar progressBar;
 
     private Bundle bundle;
 
@@ -64,6 +67,7 @@ public class AddPriceActivity extends AppCompatActivity {
         currentUserId = Namelesser.getInstance().getUserName();
 
         priceEditText = findViewById(R.id.price_editText);
+        progressBar = findViewById(R.id.price_progressBar);
         nextButton = findViewById(R.id.price_next_button);
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -87,6 +91,8 @@ public class AddPriceActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if(!TextUtils.isEmpty(priceEditText.getText().toString().trim())){
+
+                    progressBar.setVisibility(View.VISIBLE);
 
                     ProductDetails productDetails = new ProductDetails();
 
@@ -112,7 +118,7 @@ public class AddPriceActivity extends AppCompatActivity {
                                 public void onSuccess(DocumentReference documentReference) {
 
                                     Toast.makeText(AddPriceActivity.this, "Product added!", Toast.LENGTH_SHORT).show();
-
+                                    progressBar.setVisibility(View.INVISIBLE);
                                     startActivity(new Intent(AddPriceActivity.this, HomePage.class));
                                 }
                             }).addOnFailureListener(new OnFailureListener() {

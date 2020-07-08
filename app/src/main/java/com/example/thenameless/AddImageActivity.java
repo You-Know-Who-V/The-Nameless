@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.thenameless.model.Namelesser;
@@ -46,6 +47,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
     private FloatingActionButton fab;
     private Button nextButton;
     private ImageButton prevImage,nextImage;
+    private ProgressBar progressBar;
 
     private int currentImageIndex = 0;
 
@@ -81,6 +83,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
         bundle = getIntent().getExtras();
 
         imageView = findViewById(R.id.image_imageView);
+        progressBar = findViewById(R.id.image_progressBar);
         fab = findViewById(R.id.image_fab);
         nextButton = findViewById(R.id.image_next_button);
         prevImage = findViewById(R.id.image_previousImage_button);
@@ -132,6 +135,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.image_fab:
                 //add new image
                 if(imageUriList.size() <= 3) {
+                    progressBar.setVisibility(View.VISIBLE);
                     chooseimg(view);
                 }
                 else{
@@ -261,6 +265,8 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
                             @Override
                             public void onSuccess(Uri uri) {
 
+                                progressBar.setVisibility(View.INVISIBLE);
+
                                 String imageUrl = uri.toString();
 
                                 imageUrlList.add(imageUrl);
@@ -277,6 +283,8 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+
+                progressBar.setVisibility(View.INVISIBLE);
 
                 Log.d(TAG, "onFailure: " + e.getMessage());
             }

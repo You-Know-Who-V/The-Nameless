@@ -11,12 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class AddDetailsActivity extends AppCompatActivity {
 
     private EditText titleEditText,descriptionEditText;
     private Button nextButton;
+
+    private ProgressBar progressBar;
 
     private Bundle bundle;
 
@@ -26,6 +29,8 @@ public class AddDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_details);
 
         bundle = getIntent().getExtras();
+
+        progressBar = findViewById(R.id.details_progressBar);
 
         titleEditText = findViewById(R.id.detail_title);
         descriptionEditText = findViewById(R.id.detail_description);
@@ -38,12 +43,15 @@ public class AddDetailsActivity extends AppCompatActivity {
                 if(!TextUtils.isEmpty(titleEditText.getText().toString().trim())
                         && !TextUtils.isEmpty(descriptionEditText.getText().toString().trim())){
 
+                        progressBar.setVisibility(View.VISIBLE);
+
                         Intent intent = new Intent(AddDetailsActivity.this, AddImageActivity.class);
 
                         intent.putExtra("title", titleEditText.getText().toString().trim());
                         intent.putExtra("description", descriptionEditText.getText().toString().trim());
                         intent.putExtra("type",bundle.getString("type"));
 
+                        progressBar.setVisibility(View.INVISIBLE);
                         startActivity(intent);
                 }
                 else{
