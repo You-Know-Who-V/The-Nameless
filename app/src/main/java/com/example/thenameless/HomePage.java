@@ -42,6 +42,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
 
+    private List<ProductDetails> list = new ArrayList<>();
+
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser currentUser;
@@ -78,44 +80,13 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-        Toast.makeText(this, String.valueOf(getAllProducts().size()), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, String.valueOf(getAllProducts().size()), Toast.LENGTH_SHORT).show();
 
-        recyclerViewHome = new RecyclerViewHome(this, getAllProducts());
-        recyclerView.setAdapter(recyclerViewHome);
+
 
         fab = findViewById(R.id.home_fab);
 
         fab.setOnClickListener(this);
-    }
-
-    private List<ProductDetails> getAllProducts() {
-
-        final List<ProductDetails> list = new ArrayList<>();
-
-        collectionReference.get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if(task.isSuccessful()) {
-                        for (QueryDocumentSnapshot documentSnapshot: task.getResult()) {
-
-                            ProductDetails productDetails = new ProductDetails();
-
-                            productDetails.setTimeAdded(documentSnapshot.getString("timeAdded"));
-                            productDetails.setPrice(Integer.parseInt(documentSnapshot.get("price").toString()));
-                            productDetails.setTitle(documentSnapshot.getString("title"));
-                            productDetails.setImage1_url(documentSnapshot.getString("image1_url"));
-                            productDetails.setType(documentSnapshot.getString("type"));
-
-                            list.add(productDetails);
-                        }
-                    }
-                }
-            });
-
-        //Toast.makeText(HomePage.this, list.size(), Toast.LENGTH_SHORT).show();
-
-        return list;
     }
 
     @Override
@@ -187,6 +158,35 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
         currentUser = firebaseAuth.getCurrentUser();
         firebaseAuth.addAuthStateListener(authStateListener);
+
+        collectionReference.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot: task.getResult()) {
+
+                                ProductDetails productDetails = new ProductDetails();
+
+                                productDetails.setTimeAdded(documentSnapshot.getString("timeAdded"));
+                                productDetails.setPrice(Integer.parseInt(documentSnapshot.get("price").toString()));
+                                productDetails.setTitle(documentSnapshot.getString("title"));
+                                productDetails.setImage1_url(documentSnapshot.getString("image1_url"));
+                                productDetails.setType(documentSnapshot.getString("type"));
+
+                                //Log.d(TAG, "onComplete: " + documentSnapshot.getString("title"));
+
+                                list.add(productDetails);
+                                //Log.d(TAG, "onComplete: " + list.size());
+                            }
+                            recyclerViewHome = new RecyclerViewHome(HomePage.this, list);
+
+                            recyclerView.setAdapter(recyclerViewHome);
+                        }
+                    }
+                });
+
+
 
 
     }
