@@ -99,10 +99,15 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
+        Intent intent = new Intent(HomePage.this, ParticularTypeActivity.class);
+
         switch(item.getItemId())
         {
-            case R.id.logout:LoginActivity.mAuth.signOut();
+            case R.id.logout:
+                LoginActivity.mAuth.signOut();
                             finish();
+
+                            startActivity(new Intent(HomePage.this, LoginActivity.class));
                             break;
 
             case R.id.cart: //Filter search result to show only books
@@ -115,22 +120,42 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
             case R.id.books: //Filter search result to show only books
                 Toast.makeText(this, "Books Selected", Toast.LENGTH_SHORT).show();
+
+                intent.putExtra("type","Book");
+
+                startActivity(intent);
                 break;
 
             case R.id.lab_coat: //Filter search result to show only Lab Coats
                 Toast.makeText(this, "Lab Coat Selected", Toast.LENGTH_SHORT).show();
+
+                intent.putExtra("type","Lab Coat");
+
+                startActivity(intent);
                 break;
 
             case R.id.instrument: //Filter search result to show only Instrument
                 Toast.makeText(this, "Instrument Selected", Toast.LENGTH_SHORT).show();
+
+                intent.putExtra("type","Other Category");
+
+                startActivity(intent);
                 break;
 
             case R.id.sports: //Filter search result to show only Sports
                 Toast.makeText(this, "Sports Selected", Toast.LENGTH_SHORT).show();
+
+                intent.putExtra("type","Other Category");
+
+                startActivity(intent);
                 break;
 
             case R.id.other_category: //Filter search result to show only books
                 Toast.makeText(this, "Other Category Selected", Toast.LENGTH_SHORT).show();
+
+                intent.putExtra("type","Other Category");
+
+                startActivity(intent);
                 break;
         }
         if(item.getItemId()==R.id.logout)
@@ -139,6 +164,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onClick(View view) {
@@ -182,6 +208,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                             recyclerViewHome = new RecyclerViewHome(HomePage.this, list);
 
                             recyclerView.setAdapter(recyclerViewHome);
+                            //recyclerView.notify();
                         }
                     }
                 });
