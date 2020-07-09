@@ -15,7 +15,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
+import android.widget.SearchView.OnQueryTextListener;
 
 import com.example.thenameless.model.ProductDetails;
 import com.example.thenameless.view.RecyclerViewHome;
@@ -93,6 +95,27 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_page_menu,menu);
         MenuCompat.setGroupDividerEnabled(menu, true);
+
+        MenuItem item = menu.findItem(R.id.search_bar);
+
+        SearchView searchView = (SearchView) item.getActionView();
+
+        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                recyclerViewHome.getFilter().filter(newText);
+
+                return false;
+            }
+        });
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -117,7 +140,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             case R.id.my_acc:   //Go to Account Settings
                 Toast.makeText(this, "My Account Selected", Toast.LENGTH_SHORT).show();
 
-                
+
                 break;
 
             case R.id.books: //Filter search result to show only books
@@ -158,6 +181,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                 intent.putExtra("type","Other Category");
 
                 startActivity(intent);
+                break;
+            case R.id.search_bar:
                 break;
         }
         if(item.getItemId()==R.id.logout)
