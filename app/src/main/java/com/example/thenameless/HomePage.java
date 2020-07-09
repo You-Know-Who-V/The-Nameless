@@ -115,7 +115,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 //
 //                Toast.makeText(HomePage.this, "here", Toast.LENGTH_SHORT).show();
 
-                recyclerViewHome.getFilter().filter(newText);
+                recyclerViewHome.filter(newText);
 
                 return false;
             }

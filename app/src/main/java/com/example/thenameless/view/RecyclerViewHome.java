@@ -24,8 +24,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
-public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.ViewHolder> implements Filterable {
+public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.ViewHolder> {
 
     private List<ProductDetails> productDetailsList;
     private Context context;
@@ -93,46 +94,64 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
         return productDetailsList.size();
     }
 
-    @Override
-    public Filter getFilter() {
-        return titleFilter;
+//    @Override
+//    public Filter getFilter() {
+//        return titleFilter;
+//    }
+    public void filter(String textSearch){
+
+        textSearch = textSearch.toLowerCase(Locale.getDefault());
+
+        productDetailsList.clear();
+
+        if (textSearch.length() == 0) {
+
+            productDetailsList.addAll(productDetailsListFull);
+        } else {
+
+            for (ProductDetails productDetails : productDetailsListFull) {
+                if (productDetails.getTitle().toLowerCase(Locale.getDefault()).contains(textSearch))
+                    productDetailsList.add(productDetails);
+            }
+        }
+        notifyDataSetChanged();
     }
 
-    private Filter titleFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-
-            List<ProductDetails> filteredList = new ArrayList<>();
-
-            if(charSequence == null || charSequence.length() == 0) {
-                filteredList.addAll(productDetailsListFull);
-            }
-            else {
-
-                String filterPattern = charSequence.toString().toLowerCase().trim();
-
-                for(ProductDetails productDetails : productDetailsList) {
-                    if(productDetails.getTitle().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(productDetails);
-                    }
-                }
-            }
-
-            FilterResults filterResults = new FilterResults();
-            filterResults.values = filteredList;
-            return filterResults;
-        }
-
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            productDetailsList.clear();
-            productDetailsList.addAll((List) filterResults.values);
-
-            Toast.makeText(context, String.valueOf(productDetailsList.size()), Toast.LENGTH_SHORT).show();
-
-            notifyDataSetChanged();
-        }
-    };
+//    private Filter titleFilter = new Filter() {
+//        @Override
+//        protected FilterResults performFiltering(CharSequence charSequence) {
+//
+//            List<ProductDetails> filteredList = new ArrayList<>();
+//
+//            if(charSequence == null || charSequence.length() == 0) {
+//                filteredList.addAll(productDetailsListFull);
+//            }
+//            else {
+//
+//                String filterPattern = charSequence.toString().toLowerCase().trim();
+//
+//                for(ProductDetails productDetails : productDetailsList) {
+//                    if(productDetails.getTitle().toLowerCase().contains(filterPattern)) {
+//                        filteredList.add(productDetails);
+//                    }
+//                }
+//            }
+//
+//            FilterResults filterResults = new FilterResults();
+//            filterResults.values = filteredList;
+//            return filterResults;
+//        }
+//
+//        @Override
+//        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+//            productDetailsList.clear();
+//            productDetailsList.addAll((List) filterResults.values);
+//
+//            //Toast.makeText(context, String.valueOf(productDetailsList.size()), Toast.LENGTH_SHORT).show();
+//
+//            notifyDataSetChanged();
+//        }
+//    };
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
