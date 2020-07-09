@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 
 import com.example.thenameless.model.ProductDetails;
 import com.example.thenameless.view.RecyclerViewHome;
@@ -110,6 +111,30 @@ public class ParticularTypeActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.particular_type_page_menu_bar,menu);
+
+        MenuItem item = menu.findItem(R.id.particular_search_button);
+        SearchView searchView = (SearchView) item.getActionView();
+        //Toast.makeText(HomePage.this, "here", Toast.LENGTH_SHORT).show();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+//                recyclerViewHome = new RecyclerViewHome(HomePage.this, list);
+//                recyclerView.setAdapter(recyclerViewHome);
+//
+//                Toast.makeText(HomePage.this, "here", Toast.LENGTH_SHORT).show();
+
+                recyclerViewHome.filter(newText);
+
+                return false;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 
