@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
+import android.app.SearchManager;
 import android.widget.SearchView.OnQueryTextListener;
 
 import com.example.thenameless.model.ProductDetails;
@@ -96,9 +97,9 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
         getMenuInflater().inflate(R.menu.home_page_menu,menu);
         MenuCompat.setGroupDividerEnabled(menu, true);
 
-        MenuItem item = menu.findItem(R.id.search_bar);
-
+        MenuItem item = menu.findItem(R.id.search_button);
         SearchView searchView = (SearchView) item.getActionView();
+        //Toast.makeText(HomePage.this, "here", Toast.LENGTH_SHORT).show();
 
         searchView.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
@@ -109,12 +110,16 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             @Override
             public boolean onQueryTextChange(String newText) {
 
+                recyclerViewHome = new RecyclerViewHome(HomePage.this, list);
+                recyclerView.setAdapter(recyclerViewHome);
+
+                Toast.makeText(HomePage.this, "here", Toast.LENGTH_SHORT).show();
+
                 recyclerViewHome.getFilter().filter(newText);
 
                 return false;
             }
         });
-
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -181,8 +186,6 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                 intent.putExtra("type","Other Category");
 
                 startActivity(intent);
-                break;
-            case R.id.search_bar:
                 break;
         }
         if(item.getItemId()==R.id.logout)

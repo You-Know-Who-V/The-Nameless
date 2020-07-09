@@ -9,6 +9,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -126,6 +127,8 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             productDetailsList.clear();
             productDetailsList.addAll((List) filterResults.values);
+
+            Toast.makeText(context, String.valueOf(productDetailsList.size()), Toast.LENGTH_SHORT).show();
 
             notifyDataSetChanged();
         }
