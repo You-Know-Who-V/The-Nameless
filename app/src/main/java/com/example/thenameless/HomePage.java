@@ -199,6 +199,12 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                                 productDetails.setTitle(documentSnapshot.getString("title"));
                                 productDetails.setImage1_url(documentSnapshot.getString("image1_url"));
                                 productDetails.setType(documentSnapshot.getString("type"));
+                                productDetails.setUserId(documentSnapshot.getString("userId"));
+                                productDetails.setDescription(documentSnapshot.getString("description"));
+                                productDetails.setUserName(documentSnapshot.getString("userName"));
+                                productDetails.setImage2_url(documentSnapshot.getString("image2_url"));
+                                productDetails.setImage3_url(documentSnapshot.getString("image3_url"));
+                                productDetails.setImage4_url(documentSnapshot.getString("image4_url"));
 
                                 //Log.d(TAG, "onComplete: " + documentSnapshot.getString("title"));
 

@@ -1,6 +1,7 @@
 package com.example.thenameless.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.thenameless.ProductPreview;
 import com.example.thenameless.R;
 import com.example.thenameless.model.ProductDetails;
 import com.squareup.picasso.Picasso;
@@ -36,9 +39,9 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewHome.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RecyclerViewHome.ViewHolder holder, int position) {
 
-        ProductDetails productDetails = productDetailsList.get(position);
+        final ProductDetails productDetails = productDetailsList.get(position);
 
         holder.title.setText(productDetails.getTitle());
         holder.type.setText(productDetails.getType());
@@ -49,6 +52,31 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
                 .load(imageUrl)
                 .placeholder(R.drawable.cool_backgrounds)
                 .into(holder.imageView);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+
+            //goto ProductPreview
+
+            @Override
+            public void onClick(View view) {
+
+                Intent intent =new Intent(context, ProductPreview.class);
+
+                intent.putExtra("title",productDetails.getTitle());
+                intent.putExtra("type",productDetails.getType());
+                intent.putExtra("description",productDetails.getDescription());
+                intent.putExtra("userName",productDetails.getUserName());
+                intent.putExtra("userId",productDetails.getUserId());
+                intent.putExtra("price",productDetails.getPrice());
+                intent.putExtra("timeAdded",productDetails.getTimeAdded());
+                intent.putExtra("image1_url",productDetails.getImage1_url());
+                intent.putExtra("image2_url",productDetails.getImage2_url());
+                intent.putExtra("image3_url",productDetails.getImage3_url());
+                intent.putExtra("image4_url",productDetails.getImage4_url());
+
+                context.startActivity(intent);
+            }
+        });
 
     }
 
@@ -61,6 +89,7 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
 
         private ImageView imageView;
         private TextView title,type,timeAdded;
+        private CardView cardView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +98,7 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
             title = itemView.findViewById(R.id.row_title);
             type = itemView.findViewById(R.id.row_type);
             timeAdded = itemView.findViewById(R.id.row_time);
+            cardView = itemView.findViewById(R.id.row_cardView);
 
         }
     }
