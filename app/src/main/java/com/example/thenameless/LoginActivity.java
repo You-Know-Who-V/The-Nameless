@@ -65,6 +65,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 if(currentUser != null){
 
+                    startActivity(new Intent(LoginActivity.this, HomePage.class));
+
                 }
                 else{
 

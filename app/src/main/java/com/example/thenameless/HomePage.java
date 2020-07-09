@@ -116,6 +116,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
             case R.id.my_acc:   //Go to Account Settings
                 Toast.makeText(this, "My Account Selected", Toast.LENGTH_SHORT).show();
+
+                
                 break;
 
             case R.id.books: //Filter search result to show only books
