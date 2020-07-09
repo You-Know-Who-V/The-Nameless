@@ -110,10 +110,10 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                recyclerViewHome = new RecyclerViewHome(HomePage.this, list);
-                recyclerView.setAdapter(recyclerViewHome);
-
-                Toast.makeText(HomePage.this, "here", Toast.LENGTH_SHORT).show();
+//                recyclerViewHome = new RecyclerViewHome(HomePage.this, list);
+//                recyclerView.setAdapter(recyclerViewHome);
+//
+//                Toast.makeText(HomePage.this, "here", Toast.LENGTH_SHORT).show();
 
                 recyclerViewHome.getFilter().filter(newText);
 
