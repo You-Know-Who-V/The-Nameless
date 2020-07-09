@@ -132,7 +132,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
         switch(item.getItemId())
         {
             case R.id.logout:
-                LoginActivity.mAuth.signOut();
+                MainActivity.mAuth.signOut();
                             finish();
 
                             startActivity(new Intent(HomePage.this, LoginActivity.class));
