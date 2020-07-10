@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,8 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.thenameless.ProductPreview;
 import com.example.thenameless.R;
+import com.example.thenameless.model.Namelesser;
 import com.example.thenameless.model.ProductDetails;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.collect.Lists;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,6 +40,10 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
     private List<ProductDetails> productDetailsList;
     private Context context;
     private List<ProductDetails> productDetailsListFull;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private CollectionReference collectionReference = db.collection(Namelesser.getInstance().getUserName() +"Favourites");
 
     public RecyclerViewHome(Context context, List<ProductDetails> productDetailsList) {
         this.productDetailsList = productDetailsList;
@@ -62,6 +75,29 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
                 .load(imageUrl)
                 .placeholder(R.drawable.cool_backgrounds)
                 .into(holder.imageView);
+
+        holder.favButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+
+                collectionReference.add(productDetails)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                holder.favButton.setBackgroundResource(R.drawable.ic_baseline_star_24);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(context, "Failed to Add Favourite!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+            }
+        });
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
 
@@ -118,47 +154,12 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
         notifyDataSetChanged();
     }
 
-//    private Filter titleFilter = new Filter() {
-//        @Override
-//        protected FilterResults performFiltering(CharSequence charSequence) {
-//
-//            List<ProductDetails> filteredList = new ArrayList<>();
-//
-//            if(charSequence == null || charSequence.length() == 0) {
-//                filteredList.addAll(productDetailsListFull);
-//            }
-//            else {
-//
-//                String filterPattern = charSequence.toString().toLowerCase().trim();
-//
-//                for(ProductDetails productDetails : productDetailsList) {
-//                    if(productDetails.getTitle().toLowerCase().contains(filterPattern)) {
-//                        filteredList.add(productDetails);
-//                    }
-//                }
-//            }
-//
-//            FilterResults filterResults = new FilterResults();
-//            filterResults.values = filteredList;
-//            return filterResults;
-//        }
-//
-//        @Override
-//        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-//            productDetailsList.clear();
-//            productDetailsList.addAll((List) filterResults.values);
-//
-//            //Toast.makeText(context, String.valueOf(productDetailsList.size()), Toast.LENGTH_SHORT).show();
-//
-//            notifyDataSetChanged();
-//        }
-//    };
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageView;
         private TextView title,type,timeAdded;
         private CardView cardView;
+        private ImageButton favButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -168,6 +169,7 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
             type = itemView.findViewById(R.id.row_type);
             timeAdded = itemView.findViewById(R.id.row_time);
             cardView = itemView.findViewById(R.id.row_cardView);
+            favButton = itemView.findViewById(R.id.row_fav_imageButton);
 
         }
     }

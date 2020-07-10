@@ -38,7 +38,7 @@ public class RecyclerViewAdapterMyProduct extends RecyclerView.Adapter<RecyclerV
     @Override
     public RecyclerViewAdapterMyProduct.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_row, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.product_recycler_view_row, parent, false);
 
         return new ViewHolder(view);
     }
@@ -57,30 +57,15 @@ public class RecyclerViewAdapterMyProduct extends RecyclerView.Adapter<RecyclerV
                 .placeholder(R.drawable.cool_backgrounds)
                 .into(holder.imageView);
 
-//        holder.cardView.setOnClickListener(new View.OnClickListener() {
-//
-//            //goto ProductPreview
-//
-//            @Override
-//            public void onClick(View view) {
-//
-//                Intent intent =new Intent(context, ProductPreview.class);
-//
-//                intent.putExtra("title",productDetails.getTitle());
-//                intent.putExtra("type",productDetails.getType());
-//                intent.putExtra("description",productDetails.getDescription());
-//                intent.putExtra("userName",productDetails.getUserName());
-//                intent.putExtra("userId",productDetails.getUserId());
-//                intent.putExtra("price",productDetails.getPrice());
-//                intent.putExtra("timeAdded",productDetails.getTimeAdded());
-//                intent.putExtra("image1_url",productDetails.getImage1_url());
-//                intent.putExtra("image2_url",productDetails.getImage2_url());
-//                intent.putExtra("image3_url",productDetails.getImage3_url());
-//                intent.putExtra("image4_url",productDetails.getImage4_url());
-//
-//                context.startActivity(intent);
-//            }
-//        });
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                //TODO:goto editProduct Activity
+
+            }
+        });
     }
 
     public void filter(String textSearch){

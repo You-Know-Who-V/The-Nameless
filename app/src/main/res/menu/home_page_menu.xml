@@ -8,24 +8,39 @@
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView"/>
 
-    <item android:title="cart"
+    <item
+        android:title="cart"
         android:id="@+id/cart"
         android:icon="@drawable/ic_shopping_cart_"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="ifRoom" />
     <group android:id="@+id/grp1">
-    <item android:title="Logout" android:id="@+id/logout"></item>
+        <item
+            android:title="Logout"
+            android:id="@+id/logout" />
     </group>
     <group android:id="@+id/grp2">
-    <item android:title="My Account" android:id="@+id/my_acc"></item>
+        <item
+            android:title="My Account"
+            android:id="@+id/my_acc" />
     </group>
     <group android:id="@+id/grp3">
     <item android:title="Types" android:id="@+id/types">
         <menu>
-            <item android:id="@+id/books" android:title="Books"></item>
-            <item android:title="Lab Coat" android:id="@+id/lab_coat"></item>
-            <item android:title="Instrument" android:id="@+id/instrument"></item>
-            <item android:title="Sports" android:id="@+id/sports"></item>
-            <item android:title="Other Category" android:id="@+id/other_category"></item>
+            <item
+                android:id="@+id/books"
+                android:title="Books" />
+            <item
+                android:title="Lab Coat"
+                android:id="@+id/lab_coat" />
+            <item
+                android:title="Instrument"
+                android:id="@+id/instrument" />
+            <item
+                android:title="Sports"
+                android:id="@+id/sports" />
+            <item
+                android:title="Other Category"
+                android:id="@+id/other_category" />
         </menu>
     </item>
     </group>
