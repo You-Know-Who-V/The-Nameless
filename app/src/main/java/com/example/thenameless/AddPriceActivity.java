@@ -64,7 +64,7 @@ public class AddPriceActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
 
         currentUserName = Namelesser.getInstance().getUserName();
-        currentUserId = Namelesser.getInstance().getUserName();
+        currentUserId = Namelesser.getInstance().getUserId();
 
         priceEditText = findViewById(R.id.price_editText);
         progressBar = findViewById(R.id.price_progressBar);

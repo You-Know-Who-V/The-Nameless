@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Toast;
 import android.app.SearchManager;
@@ -44,6 +46,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
     private static final String TAG = "Home Page";
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
+    private ImageButton myProductsButton;
 
     private List<ProductDetails> list = new ArrayList<>();
 
@@ -85,11 +88,11 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
         //Toast.makeText(this, String.valueOf(getAllProducts().size()), Toast.LENGTH_SHORT).show();
 
-
-
+        myProductsButton = findViewById(R.id.home_myProducts_button);
         fab = findViewById(R.id.home_fab);
 
         fab.setOnClickListener(this);
+        myProductsButton.setOnClickListener(this);
     }
 
     @Override
@@ -169,7 +172,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             case R.id.instrument: //Filter search result to show only Instrument
                 Toast.makeText(this, "Instrument Selected", Toast.LENGTH_SHORT).show();
 
-                intent.putExtra("type","Other Category");
+                intent.putExtra("type","Instrument");
 
                 startActivity(intent);
                 break;
@@ -177,7 +180,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             case R.id.sports: //Filter search result to show only Sports
                 Toast.makeText(this, "Sports Selected", Toast.LENGTH_SHORT).show();
 
-                intent.putExtra("type","Other Category");
+                intent.putExtra("type","Sports");
 
                 startActivity(intent);
                 break;
@@ -206,6 +209,9 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             case R.id.home_fab:
                 //add new item
                 startActivity(new Intent(HomePage.this, ProductTypesListActivity.class));
+                break;
+            case R.id.home_myProducts_button:
+                startActivity(new Intent(HomePage.this, MyProductList.class));
                 break;
         }
     }

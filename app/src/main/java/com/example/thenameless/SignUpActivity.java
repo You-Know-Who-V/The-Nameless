@@ -170,7 +170,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                                         Namelesser namelesser = Namelesser.getInstance();
 
                                                         namelesser.setUserName(currentUserName);
-                                                        namelesser.setUserId(currentUserId);
+                                                        namelesser.setUserId(currentUser.getUid());
+
+                                                        //Toast.makeText(SignUpActivity.this, Namelesser.getInstance().getUserId(), Toast.LENGTH_SHORT).show();
 
                                                         Intent in=new Intent(SignUpActivity.this, AccountDetails.class);
                                                         in.putExtra("type","1");

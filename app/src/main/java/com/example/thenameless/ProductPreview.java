@@ -18,7 +18,7 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
     private static final String TAG = "Product Preview";
     private Bundle bundle;
 
-    private TextView typeTextView,priceTextView,descriptionTextView,userNameTextView,dateAddedTextView,titleTextView;
+    private TextView priceTextView,detailsTextView,userNameTextView,titleTextView;
     private Button callButton,chatButton;
     private ImageButton previousImage,nextImage;
     private ImageView imageView;
@@ -32,11 +32,9 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
 
         bundle = getIntent().getExtras();
 
-        typeTextView = findViewById(R.id.preview_type_textView);
         priceTextView = findViewById(R.id.preview_price_textView);
-        descriptionTextView = findViewById(R.id.preview_description_textView);
+        detailsTextView = findViewById(R.id.preview_details_textView);
         userNameTextView = findViewById(R.id.preview_account_textView);
-        dateAddedTextView = findViewById(R.id.preview_date_textView);
         titleTextView = findViewById(R.id.preview_title_textView);
         callButton = findViewById(R.id.preview_call_button);
         chatButton = findViewById(R.id.preview_chat_button);
@@ -61,11 +59,12 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
                 .into(imageView);
 
         titleTextView.setText(bundle.getString("title"));
-        typeTextView.setText(bundle.getString("type"));
-        dateAddedTextView.setText(bundle.getString("timeAdded"));
-        //Log.d(TAG, "onCreate: " + bundle.getString("dateAdded"));
-        descriptionTextView.setText(bundle.getString("description"));
-        descriptionTextView.setMovementMethod(new ScrollingMovementMethod());
+        detailsTextView.setText("Type: " + bundle.getString("type")
+                                    + "\n\n" + "Description:\n"
+                                    + bundle.getString("description")
+                                    + "\n\n" + "Date Added On: "
+                                    + bundle.getString("timeAdded"));
+        detailsTextView.setMovementMethod(new ScrollingMovementMethod());
         priceTextView.setText(String.valueOf(bundle.getInt("price")));
         userNameTextView.setText(bundle.getString("userName"));
 
