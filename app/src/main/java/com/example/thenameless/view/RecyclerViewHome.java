@@ -34,6 +34,7 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
 
     public RecyclerViewHome(Context context, List<ProductDetails> productDetailsList) {
         this.productDetailsList = productDetailsList;
+        Toast.makeText(context, String.valueOf(productDetailsList.size()), Toast.LENGTH_SHORT).show();
         productDetailsListFull = new ArrayList<>(productDetailsList);
         this.context = context;
     }

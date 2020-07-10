@@ -217,6 +217,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
         currentUser = firebaseAuth.getCurrentUser();
         firebaseAuth.addAuthStateListener(authStateListener);
 
+        list.clear();
         collectionReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
