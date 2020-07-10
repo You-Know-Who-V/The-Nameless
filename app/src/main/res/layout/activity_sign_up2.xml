@@ -17,7 +17,7 @@
         android:padding="8dp"/>
 
     <EditText
-        android:id="@+id/signUp_name_editText"
+        android:id="@+id/name_editText"
         android:layout_marginTop="25dp"
         android:padding="8dp"
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
         android:inputType="textPersonName"/>
 
     <EditText
-        android:id="@+id/signUp_email_editText"
+        android:id="@+id/email_editText"
         android:layout_marginTop="15dp"
         android:padding="8dp"
         android:layout_width="match_parent"

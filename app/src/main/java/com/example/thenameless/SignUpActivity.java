@@ -29,7 +29,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.Attributes;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -57,8 +56,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        nameEditText = findViewById(R.id.signUp_name_editText);
-        emailEditText = findViewById(R.id.signUp_email_editText);
+        nameEditText = findViewById(R.id.name_editText);
+        emailEditText = findViewById(R.id.email_editText);
         passwordEditText = findViewById(R.id.signUp_password_editText);
         confirmPassword = findViewById(R.id.signUp_confirmPassword_editText);
         signUpButton = findViewById(R.id.signUp_signUp_button);
@@ -173,10 +172,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                                         namelesser.setUserName(currentUserName);
                                                         namelesser.setUserId(currentUserId);
 
-                                                        startActivity(new Intent(SignUpActivity.this, HomePage.class));
-
-
-
+                                                        Intent in=new Intent(SignUpActivity.this, AccountDetails.class);
+                                                        in.putExtra("type","1");
+                                                        in.putExtra("name",nameEditText.getText().toString());
+                                                        in.putExtra("email",emailEditText.getText().toString());
+                                                        startActivity(in);
                                                     }
                                                 });
                                     }
@@ -186,9 +186,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                     Toast.makeText(SignUpActivity.this, "Upload Failed", Toast.LENGTH_LONG).show();
                                 }
                             });
-
-                            //startActivity(new Intent(SignUpActivity.this, HomePage.class));
-                            //finish();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {

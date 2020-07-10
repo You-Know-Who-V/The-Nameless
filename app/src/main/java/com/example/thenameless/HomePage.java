@@ -133,10 +133,9 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
         {
             case R.id.logout:
                 MainActivity.mAuth.signOut();
-                            finish();
-
-                            startActivity(new Intent(HomePage.this, LoginActivity.class));
-                            break;
+                finish();
+                startActivity(new Intent(HomePage.this, LoginActivity.class));
+                break;
 
             case R.id.cart: //Filter search result to show only books
                 Toast.makeText(this, "Cart Selected", Toast.LENGTH_SHORT).show();
@@ -145,6 +144,9 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             case R.id.my_acc:   //Go to Account Settings
                 Toast.makeText(this, "My Account Selected", Toast.LENGTH_SHORT).show();
 
+                Intent in=new Intent(HomePage.this,AccountDetails.class);
+                in.putExtra("type","2");
+                startActivity(in);
 
                 break;
 
