@@ -132,8 +132,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
         super.onOptionsItemSelected(item);
         Intent intent = new Intent(HomePage.this, ParticularTypeActivity.class);
 
-        switch(item.getItemId())
-        {
+        switch(item.getItemId()) {
             case R.id.logout:
                 MainActivity.mAuth.signOut();
                 finish();
@@ -149,8 +148,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             case R.id.my_acc:   //Go to Account Settings
                 Toast.makeText(this, "My Account Selected", Toast.LENGTH_SHORT).show();
 
-                Intent in=new Intent(HomePage.this,AccountDetails.class);
-                in.putExtra("type","2");
+                Intent in = new Intent(HomePage.this, AccountDetails.class);
+                in.putExtra("type", "2");
                 startActivity(in);
 
                 break;
@@ -158,7 +157,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             case R.id.books: //Filter search result to show only books
                 Toast.makeText(this, "Books Selected", Toast.LENGTH_SHORT).show();
 
-                intent.putExtra("type","Book");
+                intent.putExtra("type", "Book");
 
                 startActivity(intent);
                 break;
@@ -166,7 +165,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             case R.id.lab_coat: //Filter search result to show only Lab Coats
                 Toast.makeText(this, "Lab Coat Selected", Toast.LENGTH_SHORT).show();
 
-                intent.putExtra("type","Lab Coat");
+                intent.putExtra("type", "Lab Coat");
 
                 startActivity(intent);
                 break;
@@ -174,7 +173,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             case R.id.instrument: //Filter search result to show only Instrument
                 Toast.makeText(this, "Instrument Selected", Toast.LENGTH_SHORT).show();
 
-                intent.putExtra("type","Instrument");
+                intent.putExtra("type", "Instrument");
 
                 startActivity(intent);
                 break;
@@ -182,7 +181,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             case R.id.sports: //Filter search result to show only Sports
                 Toast.makeText(this, "Sports Selected", Toast.LENGTH_SHORT).show();
 
-                intent.putExtra("type","Sports");
+                intent.putExtra("type", "Sports");
 
                 startActivity(intent);
                 break;
@@ -190,14 +189,10 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             case R.id.other_category: //Filter search result to show only books
                 Toast.makeText(this, "Other Category Selected", Toast.LENGTH_SHORT).show();
 
-                intent.putExtra("type","Other Category");
+                intent.putExtra("type", "Other Category");
 
                 startActivity(intent);
                 break;
-        }
-        if(item.getItemId()==R.id.logout)
-        {
-
         }
         return super.onOptionsItemSelected(item);
     }

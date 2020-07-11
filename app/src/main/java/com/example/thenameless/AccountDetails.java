@@ -1,27 +1,42 @@
 package com.example.thenameless;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +44,10 @@ import java.util.Map;
 public class AccountDetails extends AppCompatActivity {
 
     EditText nameEditText,phone_noEditText,emailEditText,clgEmailEditText,semEditText;
-    ProgressBar progressBar;
+    ProgressBar progressBar,profileImageProgressBar;
+    ImageView profileImage;
+    String imageUrl;
+    private static final int GET_IMAGE_CODE = 1111;
 
     private FirebaseUser currentUser;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -47,6 +65,10 @@ public class AccountDetails extends AppCompatActivity {
 
         progressBar=findViewById(R.id.progressBar);
         progressBar.setVisibility(View.INVISIBLE);
+        profileImageProgressBar=findViewById(R.id.profileImageProgressBar);
+        profileImageProgressBar.setVisibility(View.INVISIBLE);
+
+        profileImage=findViewById(R.id.profile_image);
 
         currentUser=MainActivity.mAuth.getCurrentUser();
         int type=Integer.parseInt(getIntent().getStringExtra("type"));
@@ -104,6 +126,9 @@ public class AccountDetails extends AppCompatActivity {
                                 clgEmailEditText.setText((String) document.get("ClgEmail"));
                                 phone_noEditText.setText((String) document.get("PhoneNo"));
                                 semEditText.setText((String) document.get("Sem"));
+                                Glide.with(AccountDetails.this)
+                                        .load(document.get("ProfileImg"))
+                                        .into(profileImage);
                             } else {
                                 Log.d("Info", "No such document");
                             }
@@ -160,6 +185,7 @@ public class AccountDetails extends AppCompatActivity {
         userDetails.put("ClgEmail",clgEmailEditText.getText().toString());
         userDetails.put("PhoneNo",phone_noEditText.getText().toString());
         userDetails.put("Sem",semEditText.getText().toString());
+        userDetails.put("ProfileImg",imageUrl);
 
         db.collection("AccountDetails").document(currentUser.getUid())
                 .set(userDetails)
@@ -177,6 +203,67 @@ public class AccountDetails extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(AccountDetails.this,"There was some error!!! Please Try again later.",Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.INVISIBLE);
+                    }
+                });
+    }
+
+    public void getPhoto()
+    {
+        Intent intent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent,GET_IMAGE_CODE);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void changeImage(View view) {
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        } else {
+            profileImageProgressBar.setVisibility(View.VISIBLE);
+            getPhoto();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==GET_IMAGE_CODE &&  resultCode==RESULT_OK)
+        {
+            if(data!=null)
+            {
+                Uri imageUri = data.getData();
+
+                //update Storage
+                addImagetoStorage(imageUri);
+                profileImage.setImageURI(imageUri);
+            }
+        }
+    }
+
+    private void addImagetoStorage(Uri imageUri)
+    {
+        final StorageReference storageRef=FirebaseStorage.getInstance().getReference().child("ProfilePic")
+                .child(""+currentUser.getUid()+ Timestamp.now().getSeconds());
+
+        storageRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                imageUrl=uri.toString();
+                                Log.d("Img url",imageUrl);
+                                Toast.makeText(AccountDetails.this, "Profile Pic Updated Successfully", Toast.LENGTH_SHORT).show();
+                                profileImageProgressBar.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AccountDetails.this,"Unable to change the Profile Picture",Toast.LENGTH_LONG).show();
                     }
                 });
     }
