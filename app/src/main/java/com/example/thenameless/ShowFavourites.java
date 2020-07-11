@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.thenameless.model.Namelesser;
 import com.example.thenameless.model.ProductDetails;
@@ -79,5 +82,23 @@ public class ShowFavourites extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.details_menu_bar,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        if(item.getItemId()==R.id.cancel)
+        {
+            startActivity(new Intent(ShowFavourites.this,HomePage.class));
+            return true;
+        }
+        return false;
     }
 }
