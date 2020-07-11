@@ -142,6 +142,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
             case R.id.cart: //Filter search result to show only books
                 Toast.makeText(this, "Cart Selected", Toast.LENGTH_SHORT).show();
+
+                startActivity(new Intent(HomePage.this, ShowFavourites.class));
                 break;
 
             case R.id.my_acc:   //Go to Account Settings

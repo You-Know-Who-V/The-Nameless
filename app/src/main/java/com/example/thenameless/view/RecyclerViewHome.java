@@ -2,6 +2,7 @@ package com.example.thenameless.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +21,18 @@ import com.example.thenameless.ProductPreview;
 import com.example.thenameless.R;
 import com.example.thenameless.model.Namelesser;
 import com.example.thenameless.model.ProductDetails;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.common.collect.Lists;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -37,9 +42,12 @@ import java.util.Locale;
 
 public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.ViewHolder> {
 
+    private static final String TAG = "Recycler View Home";
     private List<ProductDetails> productDetailsList;
     private Context context;
     private List<ProductDetails> productDetailsListFull;
+
+    private int pos;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -66,38 +74,37 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
 
         final ProductDetails productDetails = productDetailsList.get(position);
 
+        pos = position;
+
         holder.title.setText(productDetails.getTitle());
         holder.type.setText(productDetails.getType());
         holder.timeAdded.setText(productDetails.getTimeAdded());
-        String imageUrl = productDetails.getImage1_url();
+        final String imageUrl = productDetails.getImage1_url();
+
+//        if(imageUrl != null)
+//        collectionReference.whereEqualTo("image1_url",productDetails.getImage1_url())
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if(task.isSuccessful()) {
+//                            if(task.getResult().size() == 1) {
+//                                holder.flag = 1;
+//                                //Toast.makeText(context, String.valueOf(task.getResult().size()), Toast.LENGTH_SHORT).show();
+//                                holder.favButton.setBackgroundResource(R.drawable.ic_baseline_star_24);
+//                                for(QueryDocumentSnapshot snapshot : task.getResult()) {
+//                                    Log.d(TAG, "onComplete: " + productDetails.getImage1_url()  + "\n" + snapshot.getString("image1_url"));
+//                                }
+//                            }
+//                        }
+//                    }
+//                });
+
 
         Picasso.get()
                 .load(imageUrl)
                 .placeholder(R.drawable.cool_backgrounds)
                 .into(holder.imageView);
-
-        holder.favButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
-
-                collectionReference.add(productDetails)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                holder.favButton.setBackgroundResource(R.drawable.ic_baseline_star_24);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(context, "Failed to Add Favourite!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-            }
-        });
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
 
@@ -154,12 +161,13 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private ImageView imageView;
         private TextView title,type,timeAdded;
         private CardView cardView;
-        private ImageButton favButton;
+       // private ImageButton favButton;
+        private int flag = 0;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -169,8 +177,44 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
             type = itemView.findViewById(R.id.row_type);
             timeAdded = itemView.findViewById(R.id.row_time);
             cardView = itemView.findViewById(R.id.row_cardView);
-            favButton = itemView.findViewById(R.id.row_fav_imageButton);
+            //favButton = itemView.findViewById(R.id.row_fav_imageButton);
 
+
+            //favButton.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
+
+            ProductDetails productDetails = productDetailsList.get(pos);
+
+            //favButton.setBackgroundResource(R.drawable.ic_baseline_star_24);
+
+//            if(flag == 0 )
+//                    collectionReference.add(productDetails)
+//                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<DocumentReference> task) {
+//                                    if(task.isSuccessful()) {
+//                                        favButton.setBackgroundResource(R.drawable.ic_baseline_star_24);
+//                                    }
+//                                }
+//                            });
+//                else
+//                    collectionReference.whereEqualTo("image1_url",productDetails.getImage1_url())
+//                        .get()
+//                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                if(task.isSuccessful()) {
+//                                    for(QueryDocumentSnapshot snapshot : task.getResult()) {
+//                                        snapshot.getReference().delete();
+//                                    }
+//                                    favButton.setBackgroundResource(R.drawable.ic_baseline_star_23);
+//                                }
+//                            }
+//                        });
         }
     }
 }

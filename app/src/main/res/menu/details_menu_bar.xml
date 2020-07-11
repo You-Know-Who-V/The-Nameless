@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:id="@+id/grp1">
-        <item android:title="Cancel" android:id="@+id/cancel"/>
-    </group>
-
+    <item
+        android:title="Close"
+        android:id="@+id/cancel"
+        android:icon="@drawable/ic_close_sign"
+        app:showAsAction="always" />
 </menu>
