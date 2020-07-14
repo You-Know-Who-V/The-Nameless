@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.thenameless.EditProduct;
 import com.example.thenameless.ProductPreview;
 import com.example.thenameless.R;
 import com.example.thenameless.model.ProductDetails;
@@ -63,7 +64,16 @@ public class RecyclerViewAdapterMyProduct extends RecyclerView.Adapter<RecyclerV
             public void onClick(View view) {
 
                 //TODO:goto editProduct Activity
-
+                Intent in=new Intent(context, EditProduct.class);
+                in.putExtra("title",productDetails.getTitle());
+                in.putExtra("type",productDetails.getType());
+                in.putExtra("image1_url",productDetails.getImage1_url());
+                in.putExtra("image2_url",productDetails.getImage2_url());
+                in.putExtra("image3_url",productDetails.getImage3_url());
+                in.putExtra("image4_url",productDetails.getImage4_url());
+                in.putExtra("price",productDetails.getPrice());
+                in.putExtra("description",productDetails.getDescription());
+                context.startActivity(in);
             }
         });
     }

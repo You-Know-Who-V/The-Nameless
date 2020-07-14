@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShowFavourites"></activity>
+        <activity android:name=".EditProduct"></activity>
+        <activity android:name=".ShowFavourites" />
         <activity android:name=".ChangePassword" />
         <activity android:name=".MyProductList" />
         <activity android:name=".AccountDetails" />

@@ -154,10 +154,5 @@ public class MyProductList extends AppCompatActivity {
         currentUser = firebaseAuth.getCurrentUser();
         firebaseAuth.addAuthStateListener(authStateListener);
 
-
-
-
-
-
     }
 }
