@@ -35,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
     private ImageView imageView;
     private FloatingActionButton fab;
     private Button nextButton;
-    private ImageButton prevImage,nextImage;
+    private ImageButton prevImage, nextImage, clearButton;
     private ProgressBar progressBar;
 
     private int currentImageIndex = 0;
@@ -85,6 +86,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
         imageView = findViewById(R.id.image_imageView);
         progressBar = findViewById(R.id.image_progressBar);
         fab = findViewById(R.id.image_fab);
+        clearButton = findViewById(R.id.add_clear);
         nextButton = findViewById(R.id.image_next_button);
         prevImage = findViewById(R.id.image_previousImage_button);
         nextImage = findViewById(R.id.image_nextImage_button);
@@ -109,6 +111,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
         nextButton.setOnClickListener(this);
         prevImage.setOnClickListener(this);
         nextImage.setOnClickListener(this);
+        clearButton.setOnClickListener(this);
 
     }
 
@@ -197,7 +200,53 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
                 imageView.setImageURI(imageUriList.get(currentImageIndex));
                 break;
 
+            case R.id.add_clear:
+                removeImage();
+                break;
+
         }
+    }
+
+    private void removeImage() {
+
+        //Toast.makeText(this, imageList.get(currentImageIndex), Toast.LENGTH_SHORT).show();
+
+        for(int i = currentImageIndex; i < imageUriList.size()-1; i++) {
+            imageUriList.set(i, imageUriList.get(i+1));
+        }
+        imageUriList.remove(imageUriList.size()-1);
+
+        for(int i = currentImageIndex; i < imageUrlList.size()-1; i++) {
+            imageUrlList.set(i, imageUrlList.get(i+1));
+        }
+        imageUrlList.remove(imageUrlList.size()-1);
+
+        if(imageUriList.size() == 0) {
+            imageView.setImageResource(R.drawable.cool_backgrounds);
+            clearButton.setVisibility(View.INVISIBLE);
+        }
+        else {
+            if (currentImageIndex == imageUriList.size() - 1) {
+                currentImageIndex--;
+            }
+            Picasso.get()
+                    .load(imageUrlList.get(currentImageIndex))
+                    .placeholder(R.drawable.cool_backgrounds)
+                    .into(imageView);
+            if (currentImageIndex == imageUriList.size() - 1) {
+                nextImage.setVisibility(View.INVISIBLE);
+            } else {
+                nextImage.setVisibility(View.VISIBLE);
+            }
+
+            if (currentImageIndex == 0) {
+                prevImage.setVisibility(View.INVISIBLE);
+            } else {
+                prevImage.setVisibility(View.VISIBLE);
+            }
+        }
+
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -270,6 +319,8 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
                                 String imageUrl = uri.toString();
 
                                 imageUrlList.add(imageUrl);
+
+                                clearButton.setVisibility(View.VISIBLE);
 
                                 Toast.makeText(AddImageActivity.this, imageUrl, Toast.LENGTH_SHORT).show();
                             }

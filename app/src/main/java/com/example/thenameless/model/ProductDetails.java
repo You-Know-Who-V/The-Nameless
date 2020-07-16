@@ -15,23 +15,18 @@ public class ProductDetails {
     private String image2_url;
     private String image3_url;
     private String image4_url;
+    private String lastUpdated;
 
     public ProductDetails() {
 
     }
 
-    public ProductDetails(String type, String title, String userId, int price, String userName, String description, String timeAdded, String image1_url, String image2_url, String image3_url, String image4_url) {
-        this.type = type;
-        this.title = title;
-        this.userId = userId;
-        this.price = price;
-        this.userName = userName;
-        this.description = description;
-        this.timeAdded = timeAdded;
-        this.image1_url = image1_url;
-        this.image2_url = image2_url;
-        this.image3_url = image3_url;
-        this.image4_url = image4_url;
+    public String getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(String lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     public int getPrice() {
