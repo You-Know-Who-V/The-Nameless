@@ -11,28 +11,34 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.thenameless.model.Namelesser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EditProduct extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = "Product Preview";
+    private static final String TAG = "Edit Preview";
     private Bundle bundle;
 
     private EditText priceEditText, descriptionEditText,typeEditText,titleEditText;
-    private ImageButton previousImage, nextImage;
+    private ImageButton previousImage, nextImage, clearButton;
     private ImageView imageView;
 
     private int currentImageIndex = 0, mx = 1;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("productDetails");
+
+    List<String> imageList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +49,7 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
         descriptionEditText=findViewById(R.id.descriptionEditText);
         typeEditText=findViewById(R.id.typeEditText);
         titleEditText=findViewById(R.id.titleEditText);
-
+        clearButton = findViewById(R.id.edit_clear);
         imageView=findViewById(R.id.imageView);
         previousImage=findViewById(R.id.prevImageButton);
         nextImage=findViewById(R.id.nextImageButton);
@@ -52,8 +58,11 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
             if(bundle.getString("image" + i + "_url") == null){
                 break;
             }
+            imageList.add(bundle.getString("image" + i + "_url"));
             mx=i;
         }
+
+        Toast.makeText(this, String.valueOf(mx), Toast.LENGTH_SHORT).show();
 
         if(mx > 1){
             nextImage.setVisibility(View.VISIBLE);
@@ -70,6 +79,7 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
         typeEditText.setText(bundle.getString("type"));
 
         nextImage.setOnClickListener(this);
+        clearButton.setOnClickListener(this);
         previousImage.setOnClickListener(this);
     }
 
@@ -112,7 +122,53 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
 
                 break;
             }
+            case R.id.edit_clear:
+                removeImage();
+                break;
+
         }
+    }
+
+    private void removeImage() {
+        collectionReference.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            for(QueryDocumentSnapshot snapshot : task.getResult()) {
+                                for(int i = currentImageIndex+1; i < mx; i++) {
+
+                                    String temp = "image"+ (i) + "_url";
+
+                                    snapshot.getReference().update(temp, imageList.get(i));
+
+                                    Log.d(TAG, "onComplete: " + imageList.get(i) + " " + String.valueOf(i));
+
+                                }
+                                snapshot.getReference().update("image"+ (mx) + "_url", null);
+                                for(int i= currentImageIndex; i<mx-1;i++) {
+                                    imageList.set(i,imageList.get(i+1));
+                                }
+                                imageList.remove(mx-1);
+
+                                mx--;
+
+                                if(currentImageIndex == imageList.size()) {
+                                    currentImageIndex--;
+                                }
+
+                                if(imageList.size() > 1) {
+                                    Picasso.get()
+                                            .load(imageList.get(currentImageIndex + 1))
+                                            .placeholder(R.drawable.cool_backgrounds)
+                                            .into(imageView);
+
+                                }
+
+                            }
+                        }
+                    }
+                });
     }
 
     public void updateInfo(View view)
