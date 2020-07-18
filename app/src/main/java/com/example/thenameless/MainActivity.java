@@ -15,9 +15,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private CollectionReference collectionReference = db.collection("Users");
+    private CollectionReference collectionReference = db.collection("AccountDetails");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +53,23 @@ public class MainActivity extends AppCompatActivity {
 
                     Toast.makeText(MainActivity.this, currentUser.getUid(), Toast.LENGTH_SHORT).show();
 
-                    collectionReference.whereEqualTo("userId",currentUser.getUid())
+                    collectionReference.document(firebaseAuth.getUid())
                             .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if(task.isSuccessful()){
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if(task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
 
-                                        Namelesser namelesser = Namelesser.getInstance();
+                                        if(document.exists()) {
+                                            Namelesser namelesser = Namelesser.getInstance();
 
-                                        for(QueryDocumentSnapshot snapshot : task.getResult()) {
-
-                                            namelesser.setUserName(snapshot.getString("userName"));
-                                            namelesser.setUserId(snapshot.getString("userId"));
+                                            namelesser.setUserName(document.get("Name").toString());
+                                            if(document.get("PhoneNo") != null)
+                                                namelesser.setUserNumber(document.get("PhoneNo").toString());
+                                            namelesser.setUserId(currentUser.getUid());
+                                            namelesser.setUserMail(document.get("EMail").toString());
                                         }
-
                                     }
                                 }
                             });

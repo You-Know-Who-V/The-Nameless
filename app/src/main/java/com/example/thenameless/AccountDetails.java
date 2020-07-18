@@ -52,8 +52,8 @@ public class AccountDetails extends AppCompatActivity {
     private static final String TAG = "Account Details";
     private EditText nameEditText,emailEditText,clgEmailEditText,semEditText;
     private ImageView profileImage;
-    private String imageUrl = "";
-    private Button verifyButton;
+    private String imageUrl;
+    private Button verifyButton, updateButton;
     private static final int GET_IMAGE_CODE = 1111;
 
     private FirebaseAuth mAuth;
@@ -74,12 +74,20 @@ public class AccountDetails extends AppCompatActivity {
         emailEditText=findViewById(R.id.email_editText);
         clgEmailEditText=findViewById(R.id.clg_emailEditText);
         semEditText=findViewById(R.id.sem_editText);
+        updateButton = findViewById(R.id.detail_update_button);
         verifyButton = findViewById(R.id.details_verify_button);
         profileImage=findViewById(R.id.profile_image);
 
         if(Namelesser.getInstance().getUserNumber() != null) {
             verifyButton.setText("Change Verified Phone Number");
         }
+
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateInfo();
+            }
+        });
 
         currentUser=mAuth.getCurrentUser();
         int type=Integer.parseInt(getIntent().getStringExtra("type"));
@@ -89,9 +97,12 @@ public class AccountDetails extends AppCompatActivity {
             nameEditText.setText(getIntent().getStringExtra("name"));
             emailEditText.setText(getIntent().getStringExtra("email"));
         }
-        else
+        else if (type == 3)
         {
-            //already existing user
+            getDetails();
+            updateInfo();
+        }
+        else {
             getDetails();
         }
     }
@@ -137,6 +148,8 @@ public class AccountDetails extends AppCompatActivity {
                                 emailEditText.setText((String) document.get("EMail"));
                                 clgEmailEditText.setText((String) document.get("ClgEmail"));
                                 semEditText.setText((String) document.get("Sem"));
+                                imageUrl=(String) document.get("ProfileImg");
+                                if((String) document.get("ProfileImg") != "")
                                 Picasso.get()
                                         .load((String) document.get("ProfileImg"))
                                         .placeholder(R.drawable.cool_backgrounds)
@@ -157,7 +170,7 @@ public class AccountDetails extends AppCompatActivity {
                 });
     }
 
-    public void updateInfo(View view)
+    public void updateInfo()
     {
         if(!TextUtils.isEmpty(nameEditText.getText().toString().trim())
                 && !TextUtils.isEmpty(emailEditText.getText().toString().trim())
@@ -257,7 +270,7 @@ public class AccountDetails extends AppCompatActivity {
                         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                imageUrl+=uri.toString();
+                                imageUrl=uri.toString();
                                 Log.d("Img url",imageUrl);
                                 Toast.makeText(AccountDetails.this, "Profile Pic Updated Successfully", Toast.LENGTH_SHORT).show();
 //

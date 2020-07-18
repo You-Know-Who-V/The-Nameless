@@ -79,7 +79,7 @@ public class VerifyPhoneNumber extends AppCompatActivity {
 
             Intent intent = new Intent(VerifyPhoneNumber.this, AccountDetails.class);
 
-            intent.putExtra("type", "2");
+            intent.putExtra("type", "3");
 
             startActivity(intent);
             finish();
@@ -121,7 +121,7 @@ public class VerifyPhoneNumber extends AppCompatActivity {
 
             Intent intent = new Intent(VerifyPhoneNumber.this, AccountDetails.class);
 
-            intent.putExtra("type", "2");
+            intent.putExtra("type", "3");
 
             startActivity(intent);
             finish();

@@ -139,11 +139,11 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
                         if(task.isSuccessful())
                         {
                             myDailog.setContentView(R.layout.custom_pop_up);
-                            nameTextView=myDailog.findViewById(R.id.name);
-                            email=myDailog.findViewById(R.id.email);
-                            phno=myDailog.findViewById(R.id.phno);
-                            profileImageView=myDailog.findViewById(R.id.profilepic);
-                            ImageView close=myDailog.findViewById(R.id.txtclose);
+                            nameTextView=myDailog.findViewById(R.id.custom_name_textView);
+                            email=myDailog.findViewById(R.id.custom_email_textView);
+                            phno=myDailog.findViewById(R.id.custom_phoneNumber_textView);
+                            profileImageView=myDailog.findViewById(R.id.custom_imageView);
+                            ImageView close=myDailog.findViewById(R.id.custom_cancel);
                             close.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -154,9 +154,9 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
                             {
                                 Log.d("Info", String.valueOf(document.getData()));
                                 Map<String, Object> info=document.getData();
-                                nameTextView.setText(info.get("Name").toString());
-                                phno.setText(info.get("PhoneNo").toString());
-                                email.setText(info.get("EMail").toString());
+                                nameTextView.setText("Name: " + info.get("Name").toString());
+                                phno.setText("Phone Number: " + info.get("PhoneNo").toString());
+                                email.setText("Email: " + info.get("EMail").toString());
                                 Glide.with(ProductPreview.this)
                                         .load(info.get("ProfileImg"))
                                         .into(profileImageView);

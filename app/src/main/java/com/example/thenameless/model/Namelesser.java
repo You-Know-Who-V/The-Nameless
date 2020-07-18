@@ -7,6 +7,7 @@ public class Namelesser extends Application {
     private String userName;
     private String userId;
     private String userNumber;
+    private String userMail;
 
     public static Namelesser instance;
 
@@ -27,6 +28,14 @@ public class Namelesser extends Application {
 
     public void setUserNumber(String userNumber) {
         this.userNumber = userNumber;
+    }
+
+    public String getUserMail() {
+        return userMail;
+    }
+
+    public void setUserMail(String userMail) {
+        this.userMail = userMail;
     }
 
     public String getUserName() {
