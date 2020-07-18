@@ -50,7 +50,6 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
     TextView nameTextView,email,phno;
     ImageView profileImageView;
     Dialog myDailog;
-    private Button callButton, chatButton;
     private ImageButton previousImage, nextImage, favButton;
     private ImageView imageView;
 
@@ -72,9 +71,7 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
         detailsTextView = findViewById(R.id.preview_details_textView);
         userNameTextView = findViewById(R.id.preview_account_textView);
         titleTextView = findViewById(R.id.preview_title_textView);
-        callButton = findViewById(R.id.preview_call_button);
         favButton = findViewById(R.id.preview_fav_button);
-        chatButton = findViewById(R.id.preview_chat_button);
         previousImage = findViewById(R.id.preview_previous_imageButton);
         nextImage = findViewById(R.id.preview_next_imageButton);
         imageView = findViewById(R.id.preview_imageView);
@@ -123,8 +120,6 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
         userNameTextView.setOnClickListener(this);
         nextImage.setOnClickListener(this);
         previousImage.setOnClickListener(this);
-        callButton.setOnClickListener(this);
-        chatButton.setOnClickListener(this);
         favButton.setOnClickListener(this);
 
     }
@@ -197,12 +192,6 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
 
         switch (view.getId()){
-            case R.id.preview_call_button:
-                //call the user's whose product it is
-                break;
-            case R.id.preview_chat_button:
-                //chat with the user
-                break;
             case R.id.preview_next_imageButton:
 
                 currentImageIndex++;

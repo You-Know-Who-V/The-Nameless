@@ -64,7 +64,7 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
     @Override
     public RecyclerViewHome.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_row, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.product_recycler_view_row, parent, false);
 
         return new ViewHolder(view);
     }

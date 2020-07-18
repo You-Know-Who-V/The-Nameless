@@ -85,15 +85,21 @@ public class ParticularTypeActivity extends AppCompatActivity {
 
                         if(task.isSuccessful()){
 
-                            for(QueryDocumentSnapshot snapshot : task.getResult()){
+                            for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
 
                                 ProductDetails productDetails = new ProductDetails();
 
-                                productDetails.setType(type);
-                                productDetails.setTitle(snapshot.getString("title"));
-                                productDetails.setImage1_url(snapshot.getString("image1_url"));
-                                productDetails.setTimeAdded(snapshot.getString("timeAdded"));
-                                productDetails.setPrice(Integer.parseInt(snapshot.get("price").toString()));
+                                productDetails.setTimeAdded(documentSnapshot.getString("timeAdded"));
+                                productDetails.setPrice(Integer.parseInt(documentSnapshot.get("price").toString()));
+                                productDetails.setTitle(documentSnapshot.getString("title"));
+                                productDetails.setImage1_url(documentSnapshot.getString("image1_url"));
+                                productDetails.setType(documentSnapshot.getString("type"));
+                                productDetails.setUserId(documentSnapshot.getString("userId"));
+                                productDetails.setDescription(documentSnapshot.getString("description"));
+                                productDetails.setUserName(documentSnapshot.getString("userName"));
+                                productDetails.setImage2_url(documentSnapshot.getString("image2_url"));
+                                productDetails.setImage3_url(documentSnapshot.getString("image3_url"));
+                                productDetails.setImage4_url(documentSnapshot.getString("image4_url"));
 
                                 typeList.add(productDetails);
 

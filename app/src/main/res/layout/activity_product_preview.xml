@@ -92,7 +92,7 @@
     <TextView
         android:id="@+id/preview_details_textView"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:gravity="center"
         android:layout_marginTop="6dp"
         android:scrollbars="vertical"
@@ -107,29 +107,6 @@
         android:text="TextView"
         android:textSize="20sp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/preview_chat_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/chat"
-            android:textSize="18sp"/>
-
-        <Button
-            android:id="@+id/preview_call_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/call"
-            android:padding="8dp"
-            android:textSize="18sp"/>
-
-    </LinearLayout>
 
 
 </LinearLayout>

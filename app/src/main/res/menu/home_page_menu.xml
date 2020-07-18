@@ -24,6 +24,11 @@
             android:id="@+id/my_acc" />
     </group>
     <group android:id="@+id/grp3">
+        <item
+            android:title="My Products"
+            android:id="@+id/my_product"/>
+    </group>
+    <group android:id="@+id/grp4">
     <item android:title="Types" android:id="@+id/types">
         <menu>
             <item

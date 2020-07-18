@@ -47,7 +47,6 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
     private static final String TAG = "Home Page";
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
-    private ImageButton myProductsButton;
 
     private List<ProductDetails> list = new ArrayList<>();
 
@@ -89,11 +88,9 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
         //Toast.makeText(this, String.valueOf(getAllProducts().size()), Toast.LENGTH_SHORT).show();
 
-        myProductsButton = findViewById(R.id.home_myProducts_button);
         fab = findViewById(R.id.home_fab);
 
         fab.setOnClickListener(this);
-        myProductsButton.setOnClickListener(this);
     }
 
     @Override
@@ -160,6 +157,14 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
                 break;
 
+            case R.id.my_product:
+
+                Toast.makeText(this, "My Product Selected", Toast.LENGTH_SHORT).show();
+
+                startActivity(new Intent(HomePage.this, MyProductList.class));
+
+                break;
+
             case R.id.books: //Filter search result to show only books
                 Toast.makeText(this, "Books Selected", Toast.LENGTH_SHORT).show();
 
@@ -216,9 +221,6 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                 }
                 else
                     startActivity(new Intent(HomePage.this, ProductTypesListActivity.class));
-                break;
-            case R.id.home_myProducts_button:
-                startActivity(new Intent(HomePage.this, MyProductList.class));
                 break;
         }
     }
