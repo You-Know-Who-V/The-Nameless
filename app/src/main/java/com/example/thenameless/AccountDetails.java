@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuCompat;
 
 import android.Manifest;
+import android.app.MediaRouteButton;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -19,58 +20,68 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.thenameless.model.Namelesser;
 import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class AccountDetails extends AppCompatActivity {
 
-    EditText nameEditText,phone_noEditText,emailEditText,clgEmailEditText,semEditText;
-    ProgressBar progressBar,profileImageProgressBar;
-    ImageView profileImage;
-    String imageUrl;
+    private static final String TAG = "Account Details";
+    private EditText nameEditText,emailEditText,clgEmailEditText,semEditText;
+    private ImageView profileImage;
+    private String imageUrl = "";
+    private Button verifyButton;
     private static final int GET_IMAGE_CODE = 1111;
+
+    private FirebaseAuth mAuth;
 
     private FirebaseUser currentUser;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ProgressBar profileImageProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_details);
 
+        mAuth = FirebaseAuth.getInstance();
+
+        profileImageProgressBar = findViewById(R.id.detail_imageProgressBar);
         nameEditText=findViewById(R.id.name_editText);
-        phone_noEditText=findViewById(R.id.phone_no_editText);
         emailEditText=findViewById(R.id.email_editText);
         clgEmailEditText=findViewById(R.id.clg_emailEditText);
-        phone_noEditText=findViewById(R.id.phone_no_editText);
         semEditText=findViewById(R.id.sem_editText);
-
-        progressBar=findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
-        profileImageProgressBar=findViewById(R.id.profileImageProgressBar);
-        profileImageProgressBar.setVisibility(View.INVISIBLE);
-
+        verifyButton = findViewById(R.id.details_verify_button);
         profileImage=findViewById(R.id.profile_image);
 
-        currentUser=MainActivity.mAuth.getCurrentUser();
+        if(Namelesser.getInstance().getUserNumber() != null) {
+            verifyButton.setText("Change Verified Phone Number");
+        }
+
+        currentUser=mAuth.getCurrentUser();
         int type=Integer.parseInt(getIntent().getStringExtra("type"));
         if(type==1)
         {
@@ -119,15 +130,16 @@ public class AccountDetails extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
+
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 nameEditText.setText((String) document.get("Name"));
                                 emailEditText.setText((String) document.get("EMail"));
                                 clgEmailEditText.setText((String) document.get("ClgEmail"));
-                                phone_noEditText.setText((String) document.get("PhoneNo"));
                                 semEditText.setText((String) document.get("Sem"));
-                                Glide.with(AccountDetails.this)
-                                        .load(document.get("ProfileImg"))
+                                Picasso.get()
+                                        .load((String) document.get("ProfileImg"))
+                                        .placeholder(R.drawable.cool_backgrounds)
                                         .into(profileImage);
                             } else {
                                 Log.d("Info", "No such document");
@@ -150,25 +162,18 @@ public class AccountDetails extends AppCompatActivity {
         if(!TextUtils.isEmpty(nameEditText.getText().toString().trim())
                 && !TextUtils.isEmpty(emailEditText.getText().toString().trim())
                 && !TextUtils.isEmpty(clgEmailEditText.getText().toString().trim())
-                && !TextUtils.isEmpty(phone_noEditText.getText().toString().trim())
                 && !TextUtils.isEmpty(semEditText.getText().toString().trim()))
         {
-            if(phone_noEditText.getText().toString().length()==10 )
-            {
+
                 if(Integer.parseInt(semEditText.getText().toString()) >=1 && Integer.parseInt(semEditText.getText().toString())<=8)
                 {
-                    progressBar.setVisibility(View.VISIBLE);
+                    //progressBar.setVisibility(View.VISIBLE);
                     updateCollection();
                 }
                 else
                 {
                     Toast.makeText(AccountDetails.this,"Sem Should be Between 1 and 8 (Both Inclusive)",Toast.LENGTH_LONG).show();
                 }
-            }
-            else
-            {
-                Toast.makeText(AccountDetails.this,"Phone Number should contain 10 Digits!!!",Toast.LENGTH_LONG).show();
-            }
 
         }
         else
@@ -183,9 +188,10 @@ public class AccountDetails extends AppCompatActivity {
         userDetails.put("Name",nameEditText.getText().toString());
         userDetails.put("EMail",emailEditText.getText().toString());
         userDetails.put("ClgEmail",clgEmailEditText.getText().toString());
-        userDetails.put("PhoneNo",phone_noEditText.getText().toString());
+        userDetails.put("PhoneNo",Namelesser.getInstance().getUserNumber());
         userDetails.put("Sem",semEditText.getText().toString());
         userDetails.put("ProfileImg",imageUrl);
+        Toast.makeText(this, imageUrl, Toast.LENGTH_SHORT).show();
 
         db.collection("AccountDetails").document(currentUser.getUid())
                 .set(userDetails)
@@ -193,7 +199,7 @@ public class AccountDetails extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(AccountDetails.this, "Details Updated Successfully!!!!!", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.INVISIBLE);
+//                        progressBar.setVisibility(View.INVISIBLE);
 
                         startActivity(new Intent(AccountDetails.this,HomePage.class));
                     }
@@ -202,7 +208,7 @@ public class AccountDetails extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(AccountDetails.this,"There was some error!!! Please Try again later.",Toast.LENGTH_LONG).show();
-                        progressBar.setVisibility(View.INVISIBLE);
+//                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
     }
@@ -235,7 +241,6 @@ public class AccountDetails extends AppCompatActivity {
 
                 //update Storage
                 addImagetoStorage(imageUri);
-                profileImage.setImageURI(imageUri);
             }
         }
     }
@@ -252,9 +257,14 @@ public class AccountDetails extends AppCompatActivity {
                         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                imageUrl=uri.toString();
+                                imageUrl+=uri.toString();
                                 Log.d("Img url",imageUrl);
                                 Toast.makeText(AccountDetails.this, "Profile Pic Updated Successfully", Toast.LENGTH_SHORT).show();
+//
+                                Picasso.get()
+                                        .load(imageUrl)
+                                        .placeholder(R.drawable.cool_backgrounds)
+                                        .into(profileImage);
                                 profileImageProgressBar.setVisibility(View.INVISIBLE);
                             }
                         });
@@ -263,8 +273,19 @@ public class AccountDetails extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        profileImageProgressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(AccountDetails.this,"Unable to change the Profile Picture",Toast.LENGTH_LONG).show();
                     }
                 });
     }
+
+
+    public void verifyPhoneNumber(View view) {
+
+        startActivity(new Intent(AccountDetails.this, EnterPhoneNumber.class));
+
+
+
+    }
+
 }

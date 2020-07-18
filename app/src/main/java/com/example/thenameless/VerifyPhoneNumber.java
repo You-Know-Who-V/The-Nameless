@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.thenameless.model.Namelesser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
@@ -30,9 +31,11 @@ public class VerifyPhoneNumber extends AppCompatActivity {
     private EditText codeEditText;
     private ProgressBar progressBar;
 
+    private String phoneNumber;
+
     private FirebaseAuth mAuth;
 
-    private String verificationId;
+    private String verificationId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,7 @@ public class VerifyPhoneNumber extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        final String phoneNumber = Objects.requireNonNull(getIntent().getExtras()).getString("phoneNumber");
+        phoneNumber = Objects.requireNonNull(getIntent().getExtras()).getString("phoneNumber");
 
         codeEditText = findViewById(R.id.verify_code_editText);
         verifyButton = findViewById(R.id.verify_button);
@@ -54,7 +57,7 @@ public class VerifyPhoneNumber extends AppCompatActivity {
             public void onClick(View view) {
 
                 if(!TextUtils.isEmpty(codeEditText.getText().toString().trim())
-                        && codeEditText.getText().toString().trim().length() != 6 ) {
+                        && codeEditText.getText().toString().trim().length() == 6 ) {
                     verifyCode(codeEditText.getText().toString().trim());
                 }
                 else {
@@ -67,27 +70,23 @@ public class VerifyPhoneNumber extends AppCompatActivity {
     }
 
     private void verifyCode(String code) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-        signInWithCredential(credential);
-    }
 
-    private void signInWithCredential(PhoneAuthCredential credential) {
+        if(verificationId == code) {
 
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
+            Namelesser namelesser = Namelesser.getInstance();
 
-                            startActivity(new Intent(VerifyPhoneNumber.this, HomePage.class));
-                            finish();
+            namelesser.setUserNumber(phoneNumber);
 
-                        }
-                        else {
-                            Toast.makeText(VerifyPhoneNumber.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+            Intent intent = new Intent(VerifyPhoneNumber.this, AccountDetails.class);
+
+            intent.putExtra("type", "2");
+
+            startActivity(intent);
+            finish();
+        }
+        else {
+            Toast.makeText(this, "Enter correct code!", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -105,7 +104,7 @@ public class VerifyPhoneNumber extends AppCompatActivity {
         public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
 
-            verificationId = s;
+            verificationId += s;
 
         }
 
@@ -114,9 +113,18 @@ public class VerifyPhoneNumber extends AppCompatActivity {
 
             String code = phoneAuthCredential.getSmsCode();
 
-            if (code != null) {
-                verifyCode(code);
-            }
+            codeEditText.setText(code);
+
+            Namelesser namelesser = Namelesser.getInstance();
+
+            namelesser.setUserNumber(phoneNumber);
+
+            Intent intent = new Intent(VerifyPhoneNumber.this, AccountDetails.class);
+
+            intent.putExtra("type", "2");
+
+            startActivity(intent);
+            finish();
 
         }
 

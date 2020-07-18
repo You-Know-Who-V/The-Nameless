@@ -22,6 +22,7 @@ import android.widget.Toast;
 import android.app.SearchManager;
 import android.widget.SearchView.OnQueryTextListener;
 
+import com.example.thenameless.model.Namelesser;
 import com.example.thenameless.model.ProductDetails;
 import com.example.thenameless.view.RecyclerViewHome;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -205,7 +206,11 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
             case R.id.home_fab:
                 //add new item
-                startActivity(new Intent(HomePage.this, ProductTypesListActivity.class));
+                if(Namelesser.getInstance().getUserNumber() == null) {
+                    Toast.makeText(this, "Verify Phone Number to add Product!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                    startActivity(new Intent(HomePage.this, ProductTypesListActivity.class));
                 break;
             case R.id.home_myProducts_button:
                 startActivity(new Intent(HomePage.this, MyProductList.class));
