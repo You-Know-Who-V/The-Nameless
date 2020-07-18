@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="6dp"
+    android:gravity="center"
+    android:layout_height="match_parent"
+    tools:context=".VerifyPhoneNumber">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/verify_code_editText"
+        android:inputType="number"
+        android:hint="Enter Code"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Verify"
+        android:layout_marginTop="12dp"
+        android:id="@+id/verify_button"/>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/verify_progressBar"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"/>
+
+
+</LinearLayout>

@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditProduct"></activity>
+        <activity android:name=".VerifyPhoneNumber"></activity>
+        <activity android:name=".EnterPhoneNumber" />
+        <activity android:name=".EditProduct" />
         <activity android:name=".ShowFavourites" />
         <activity android:name=".ChangePassword" />
         <activity android:name=".MyProductList" />

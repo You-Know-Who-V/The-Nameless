@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final int RC_SIGN_IN = 11;
     private AutoCompleteTextView emailEditText;
     private EditText passwordEditText;
-    private Button signInButton;
+    private Button signInButton, signInWithPhone;
     private TextView signUpButton;
     private ProgressBar progressBar;
     private SignInButton signInButtonGoogle;
@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         signUpButton = findViewById(R.id.login_signUp_Text);
         progressBar = findViewById(R.id.login_progressBar);
         signInButtonGoogle = findViewById(R.id.login_googleSignIn_button);
+        signInWithPhone = findViewById(R.id.login_signInWithPhone_button);
 
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -97,6 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         signUpButton.setOnClickListener(this);
         signInButton.setOnClickListener(this);
+        signInWithPhone.setOnClickListener(this);
         signInButtonGoogle.setOnClickListener(this);
     }
 
@@ -113,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     progressBar.setVisibility(View.VISIBLE);
 
                     accountLogIn(emailEditText.getText().toString().trim(),
-                                    passwordEditText.getText().toString().trim());
+                            passwordEditText.getText().toString().trim());
                 }
                 else{
                     Toast.makeText(this, "Empty Fields Not Allowed!", Toast.LENGTH_SHORT).show();
@@ -128,6 +130,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.login_googleSignIn_button:
                 progressBar.setVisibility(View.VISIBLE);
                 signIn();
+                break;
+            case R.id.login_signInWithPhone_button:
+                startActivity(new Intent(LoginActivity.this, EnterPhoneNumber.class));
                 break;
         }
 
