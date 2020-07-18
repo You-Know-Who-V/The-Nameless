@@ -125,6 +125,11 @@ public class AccountDetails extends AppCompatActivity {
         }
         else if(item.getItemId()== R.id.logout)
         {
+
+            Namelesser.getInstance().setUserMail(null);
+            Namelesser.getInstance().setUserName(null);
+            Namelesser.getInstance().setUserId(null);
+            Namelesser.getInstance().setUserNumber(null);
             MainActivity.mAuth.signOut();
             finish();
             startActivity(new Intent(AccountDetails.this, LoginActivity.class));
