@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:padding="6dp"
+    android:background="@drawable/gradient_bg"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_height="match_parent"
     tools:context=".ProductPreview">
 
     <androidx.cardview.widget.CardView
+        app:cardBackgroundColor="#E4D0C9"
         android:layout_width="match_parent"
         android:layout_height="280dp">
 
@@ -96,7 +99,7 @@
         android:gravity="center"
         android:layout_marginTop="6dp"
         android:scrollbars="vertical"
-        android:text="TextView"
+        android:text="T`extView"
         android:textSize="16sp"/>
 
     <TextView

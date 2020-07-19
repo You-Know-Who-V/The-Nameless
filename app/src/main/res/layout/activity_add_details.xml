@@ -4,35 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="6dp"
+    android:background="@drawable/gradient_bg"
     tools:context=".AddDetailsActivity">
 
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/ad_title"
-        android:padding="8dp"
-        android:textSize="20sp"
-        android:maxLines="2"
-        android:id="@+id/detail_title"
-        android:layout_marginTop="20dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:hint="@string/describe_what_are_you_selling"
-        android:textSize="20sp"
-        android:maxLines="10"
-        android:id="@+id/detail_description"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/ad_title"
+            android:padding="8dp"
+            android:textSize="20sp"
+            android:maxLines="2"
+            android:id="@+id/detail_title"
+            android:layout_marginTop="20dp"/>
 
-    <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:visibility="invisible"
-        android:id="@+id/details_progressBar"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:hint="@string/describe_what_are_you_selling"
+            android:textSize="20sp"
+            android:maxLines="10"
+            android:id="@+id/detail_description"/>
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:visibility="invisible"
+            android:id="@+id/details_progressBar"/>
+
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"

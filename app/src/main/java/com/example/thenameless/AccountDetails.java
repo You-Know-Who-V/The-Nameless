@@ -56,6 +56,8 @@ public class AccountDetails extends AppCompatActivity {
     private Button verifyButton, updateButton;
     private static final int GET_IMAGE_CODE = 1111;
 
+    int type;
+
     private FirebaseAuth mAuth;
 
     private FirebaseUser currentUser;
@@ -90,7 +92,7 @@ public class AccountDetails extends AppCompatActivity {
         });
 
         currentUser=mAuth.getCurrentUser();
-        int type=Integer.parseInt(getIntent().getStringExtra("type"));
+        type=Integer.parseInt(getIntent().getStringExtra("type"));
         if(type==1)
         {
             //new user
@@ -100,7 +102,7 @@ public class AccountDetails extends AppCompatActivity {
         else if (type == 3)
         {
             getDetails();
-            updateInfo();
+            //updateInfo();
         }
         else {
             getDetails();
@@ -159,6 +161,9 @@ public class AccountDetails extends AppCompatActivity {
                                         .load((String) document.get("ProfileImg"))
                                         .placeholder(R.drawable.cool_backgrounds)
                                         .into(profileImage);
+                                if(type == 3) {
+                                    updateInfo();
+                                }
                             } else {
                                 Log.d("Info", "No such document");
                             }

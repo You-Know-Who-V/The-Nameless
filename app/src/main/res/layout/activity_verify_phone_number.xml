@@ -5,31 +5,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/gradient_bg"
     android:padding="6dp"
     android:gravity="center"
     android:layout_height="match_parent"
     tools:context=".VerifyPhoneNumber">
 
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/verify_code_editText"
-        android:inputType="number"
-        android:hint="Enter Code"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/verify_code_editText"
+            android:inputType="number"
+            android:textSize="20sp"
+            android:padding="8dp"
+            android:hint="Enter Code"/>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/verify_progressBar"
+            android:layout_marginTop="12dp"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Verify"
-        android:layout_marginTop="12dp"
+        android:padding="8dp"
+        android:textSize="18sp"
         android:id="@+id/verify_button"/>
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/verify_progressBar"
-        android:layout_marginTop="12dp"
-        android:visibility="gone"/>
+
 
 
 </LinearLayout>

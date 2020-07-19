@@ -200,7 +200,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             case R.id.other_category: //Filter search result to show only books
                 Toast.makeText(this, "Other Category Selected", Toast.LENGTH_SHORT).show();
 
-                intent.putExtra("type", "Other Category");
+                intent.putExtra("type", "Other category");
 
                 startActivity(intent);
                 break;

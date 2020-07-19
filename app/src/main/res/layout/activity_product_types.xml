@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:padding="6dp"
+    android:background="@drawable/gradient_bg"
     android:layout_height="match_parent"
     tools:context=".ProductTypesListActivity">
     
@@ -16,7 +17,7 @@
             android:id="@+id/product_listView"
             android:padding="8dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"/>
         
     </LinearLayout>
 
