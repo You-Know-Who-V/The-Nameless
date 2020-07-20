@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:layout_width="360dp"
     android:padding="6dp"
-    android:background="@android:color/white"
+    android:background="@color/bluelight"
     android:layout_height="480dp">
 
     <ImageButton
@@ -32,6 +32,14 @@
         android:textSize="20sp"
         android:layout_marginTop="12dp"
         android:id="@+id/custom_name_textView"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textSize="20sp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/custom_branch_textView"/>
 
     <TextView
         android:layout_width="match_parent"

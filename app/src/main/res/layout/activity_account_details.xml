@@ -70,14 +70,14 @@
             android:inputType="number"/>
 
         <EditText
-            android:id="@+id/clg_emailEditText"
+            android:id="@+id/branchEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="College Mail ID"
-            android:padding="8dp"
             android:layout_marginTop="30dp"
-            android:textSize="20sp"
-            android:inputType="textEmailAddress"/>
+            android:hint="Branch"
+            android:inputType="text"
+            android:padding="8dp"
+            android:textSize="20sp" />
 
         <Button
             android:layout_width="match_parent"

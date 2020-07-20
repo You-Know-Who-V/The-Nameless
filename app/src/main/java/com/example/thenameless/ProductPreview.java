@@ -47,7 +47,7 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
     private Bundle bundle;
 
     private TextView priceTextView, detailsTextView, userNameTextView, titleTextView;
-    TextView nameTextView,email,phno;
+    TextView nameTextView,email,phno,branch;
     ImageView profileImageView;
     Dialog myDailog;
     private ImageButton previousImage, nextImage, favButton;
@@ -138,6 +138,7 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
                             email=myDailog.findViewById(R.id.custom_email_textView);
                             phno=myDailog.findViewById(R.id.custom_phoneNumber_textView);
                             profileImageView=myDailog.findViewById(R.id.custom_imageView);
+                            branch=myDailog.findViewById(R.id.custom_branch_textView);
                             ImageView close=myDailog.findViewById(R.id.custom_cancel);
                             close.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -152,6 +153,7 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
                                 nameTextView.setText("Name: " + info.get("Name").toString());
                                 phno.setText("Phone Number: " + info.get("PhoneNo").toString());
                                 email.setText("Email: " + info.get("EMail").toString());
+                                branch.setText("Branch: "+ info.get("Branch").toString());
                                 Glide.with(ProductPreview.this)
                                         .load(info.get("ProfileImg"))
                                         .into(profileImageView);
@@ -181,7 +183,7 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
 
         if(item.getItemId()==R.id.cancel)
         {
-            startActivity(new Intent(ProductPreview.this,HomePage.class));
+            finish();
             return true;
         }
         return false;
