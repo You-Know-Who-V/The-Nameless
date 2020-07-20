@@ -11,7 +11,7 @@
     <item
         android:title="cart"
         android:id="@+id/cart"
-        android:icon="@drawable/ic_shopping_cart_"
+        android:icon="@drawable/ic_baseline_favorite_25"
         app:showAsAction="ifRoom" />
     <group android:id="@+id/grp1">
         <item

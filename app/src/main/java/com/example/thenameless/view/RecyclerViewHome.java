@@ -55,7 +55,7 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
 
     public RecyclerViewHome(Context context, List<ProductDetails> productDetailsList) {
         this.productDetailsList = productDetailsList;
-        Toast.makeText(context, String.valueOf(productDetailsList.size()), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, String.valueOf(productDetailsList.size()), Toast.LENGTH_SHORT).show();
         productDetailsListFull = new ArrayList<>(productDetailsList);
         this.context = context;
     }
@@ -161,7 +161,7 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageView;
         private TextView title,type,timeAdded;
@@ -183,38 +183,5 @@ public class RecyclerViewHome extends RecyclerView.Adapter<RecyclerViewHome.View
             //favButton.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View view) {
-            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
-
-            ProductDetails productDetails = productDetailsList.get(pos);
-
-            //favButton.setBackgroundResource(R.drawable.ic_baseline_star_24);
-
-//            if(flag == 0 )
-//                    collectionReference.add(productDetails)
-//                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<DocumentReference> task) {
-//                                    if(task.isSuccessful()) {
-//                                        favButton.setBackgroundResource(R.drawable.ic_baseline_star_24);
-//                                    }
-//                                }
-//                            });
-//                else
-//                    collectionReference.whereEqualTo("image1_url",productDetails.getImage1_url())
-//                        .get()
-//                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                if(task.isSuccessful()) {
-//                                    for(QueryDocumentSnapshot snapshot : task.getResult()) {
-//                                        snapshot.getReference().delete();
-//                                    }
-//                                    favButton.setBackgroundResource(R.drawable.ic_baseline_star_23);
-//                                }
-//                            }
-//                        });
-        }
     }
 }

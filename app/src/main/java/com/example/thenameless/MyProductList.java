@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thenameless.model.Namelesser;
@@ -34,6 +37,8 @@ public class MyProductList extends AppCompatActivity {
 
     private static final String TAG = "My Product";
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private TextView message;
 
     private List<ProductDetails> list = new ArrayList<>();
 
@@ -68,11 +73,13 @@ public class MyProductList extends AppCompatActivity {
             }
         };
 
+        message = findViewById(R.id.myProduct_mess_textView);
+        progressBar = findViewById(R.id.myProduct_progressBar);
         recyclerView = findViewById(R.id.myProduct_recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         list.clear();
-        Toast.makeText(this, Namelesser.getInstance().getUserName(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, Namelesser.getInstance().getUserName(), Toast.LENGTH_SHORT).show();
         collectionReference.whereEqualTo("userName",Namelesser.getInstance().getUserName())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -103,6 +110,12 @@ public class MyProductList extends AppCompatActivity {
                             adapterMyProduct = new RecyclerViewAdapterMyProduct(MyProductList.this, list);
 
                             recyclerView.setAdapter(adapterMyProduct);
+
+                            if(list.size() == 0) {
+                                message.setVisibility(View.VISIBLE);
+                            }
+
+                            progressBar.setVisibility(View.INVISIBLE);
                             //recyclerView.notify();
                         }
                     }
@@ -151,6 +164,7 @@ public class MyProductList extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        progressBar.setVisibility(View.VISIBLE);
         currentUser = firebaseAuth.getCurrentUser();
         firebaseAuth.addAuthStateListener(authStateListener);
 

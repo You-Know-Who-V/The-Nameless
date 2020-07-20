@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/verify_progressBar"
             android:layout_marginTop="12dp"
+            android:indeterminateTint="@android:color/white"
             android:visibility="invisible"/>
 
     </LinearLayout>

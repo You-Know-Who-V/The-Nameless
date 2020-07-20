@@ -40,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:indeterminateTint="@android:color/white"
             android:visibility="invisible"
             android:id="@+id/details_progressBar"/>
 

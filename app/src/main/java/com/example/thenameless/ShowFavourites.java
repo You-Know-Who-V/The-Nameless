@@ -11,6 +11,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.thenameless.model.Namelesser;
 import com.example.thenameless.model.ProductDetails;
@@ -29,6 +33,8 @@ public class ShowFavourites extends AppCompatActivity {
 
     private static final String TAG = "Show Favourites";
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private TextView message;
 
     private RecyclerViewHome recyclerViewHome;
 
@@ -44,9 +50,15 @@ public class ShowFavourites extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_favourites);
 
+        progressBar = findViewById(R.id.fav_progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        message = findViewById(R.id.fav_mess_textView);
+
         recyclerView = findViewById(R.id.fav_recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
 
         collectionReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -54,7 +66,41 @@ public class ShowFavourites extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()) {
 
-                            for(QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            for(final QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+
+                                db.collection("productDetails").whereEqualTo("image1_url", documentSnapshot.getString("image1_url"))
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if(task.isSuccessful()) {
+
+                                                    if(task.getResult().size() > 0) {
+                                                    }
+                                                    else {
+                                                        documentSnapshot.getReference().delete();
+                                                    }
+
+                                                }
+                                            }
+                                        });
+
+                                //Log.d(TAG, "onComplete: " + documentSnapshot.getString("title"));
+
+
+                            }
+
+                        }
+                    }
+                });
+
+        collectionReference.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+
+                            for(final QueryDocumentSnapshot documentSnapshot : task.getResult()) {
 
                                 ProductDetails productDetails = new ProductDetails();
 
@@ -70,18 +116,26 @@ public class ShowFavourites extends AppCompatActivity {
                                 productDetails.setImage3_url(documentSnapshot.getString("image3_url"));
                                 productDetails.setImage4_url(documentSnapshot.getString("image4_url"));
 
-                                Log.d(TAG, "onComplete: " + documentSnapshot.getString("title"));
-
                                 productDetailsList.add(productDetails);
+
+                                //Log.d(TAG, "onComplete: " + documentSnapshot.getString("title"));
+
+
                             }
 
                             recyclerViewHome = new RecyclerViewHome(ShowFavourites.this, productDetailsList);
 
+
+                            if(productDetailsList.size() == 0) {
+                                message.setVisibility(View.VISIBLE);
+                            }
                             recyclerView.setAdapter(recyclerViewHome);
+                            progressBar.setVisibility(View.INVISIBLE);
 
                         }
                     }
                 });
+
     }
 
     @Override
@@ -100,5 +154,11 @@ public class ShowFavourites extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 }

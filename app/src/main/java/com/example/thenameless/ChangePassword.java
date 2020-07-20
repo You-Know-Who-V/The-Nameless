@@ -57,7 +57,7 @@ public class ChangePassword extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(ChangePassword.this,"Please Enter Correct Password",Toast.LENGTH_LONG).show();
+                            Toast.makeText(ChangePassword.this,"Please Enter Correct Password!",Toast.LENGTH_LONG).show();
                             currentPasswordEditText.setText("");
                             newPasswordEditText.setText("");
                             confirmPasswordEditText.setText("");
@@ -66,7 +66,7 @@ public class ChangePassword extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(ChangePassword.this, "Kindly Enter Current Password!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ChangePassword.this, "Kindly Enter Current Password!", Toast.LENGTH_SHORT).show();
             newPasswordEditText.setText("");
             confirmPasswordEditText.setText("");
         }
@@ -84,7 +84,7 @@ public class ChangePassword extends AppCompatActivity {
             }
             else if(currentPasswordEditText.getText().toString().trim().equals(newPasswordEditText.getText().toString().trim()))
             {
-                Toast.makeText(ChangePassword.this,"New Password and Current Password cannot be Same",Toast.LENGTH_LONG).show();
+                Toast.makeText(ChangePassword.this,"New Password and Current Password cannot be Same!",Toast.LENGTH_LONG).show();
                 newPasswordEditText.setText("");
                 confirmPasswordEditText.setText("");
             }
@@ -97,7 +97,7 @@ public class ChangePassword extends AppCompatActivity {
                                 if(task.isSuccessful())
                                 {
                                     progressBar.setVisibility(View.INVISIBLE);
-                                    Toast.makeText(ChangePassword.this, "Password Updated Successfully", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ChangePassword.this, "Password Updated Successfully!", Toast.LENGTH_SHORT).show();
                                     newPasswordEditText.setText("");
                                     confirmPasswordEditText.setText("");
                                     currentPasswordEditText.setText("");
@@ -119,7 +119,7 @@ public class ChangePassword extends AppCompatActivity {
             }
         }
         else {
-            Toast.makeText(ChangePassword.this, "New Password Field cannot not be Empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ChangePassword.this, "New Password Field cannot not be Empty!", Toast.LENGTH_SHORT).show();
         }
     }
 

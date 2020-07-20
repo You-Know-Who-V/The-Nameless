@@ -185,7 +185,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(SignUpActivity.this, "Upload Failed", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SignUpActivity.this, "Upload Failed!", Toast.LENGTH_LONG).show();
                                 }
                             });
                         }

@@ -54,10 +54,10 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
     private static final int GET_IMAGE_CODE = 111;
     private Bundle bundle;
 
-    private EditText priceEditText, descriptionEditText, typeEditText, titleEditText;
+    private EditText priceEditText, descriptionEditText, titleEditText;
     private ImageButton previousImage, nextImage, clearButton, addImage;
     private ImageView imageView;
-    private Button updateButton;
+    private Button updateButton, deleteButton;
 
     private int currentImageIndex = 0, mx = 1;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -78,10 +78,10 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
 
         priceEditText=findViewById(R.id.priceEditText);
         descriptionEditText=findViewById(R.id.descriptionEditText);
-        typeEditText=findViewById(R.id.typeEditText);
         titleEditText=findViewById(R.id.titleEditText);
         clearButton = findViewById(R.id.edit_clear);
         imageView=findViewById(R.id.imageView);
+        deleteButton=findViewById(R.id.edit_delete_button);
         previousImage=findViewById(R.id.prevImageButton);
         nextImage=findViewById(R.id.nextImageButton);
         updateButton = findViewById(R.id.edit_update_button);
@@ -109,13 +109,13 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
         titleEditText.setText(bundle.getString("title"));
         descriptionEditText.setText( bundle.getString("description"));
         priceEditText.setText(String.valueOf(bundle.getInt("price")));
-        typeEditText.setText(bundle.getString("type"));
 
         nextImage.setOnClickListener(this);
         clearButton.setOnClickListener(this);
         addImage.setOnClickListener(this);
         updateButton.setOnClickListener(this);
         previousImage.setOnClickListener(this);
+        deleteButton.setOnClickListener(this);
     }
 
     @Override
@@ -166,7 +166,6 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
                 if(!TextUtils.isEmpty(titleEditText.getText().toString().trim())
                         && !TextUtils.isEmpty(descriptionEditText.getText().toString().trim())
                         && !TextUtils.isEmpty(priceEditText.getText().toString().trim())
-                        && !TextUtils.isEmpty(typeEditText.getText().toString().trim())
                         && mx > 0) {
                     updateProduct();
                 }
@@ -183,8 +182,36 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
                 else {
                     Toast.makeText(this, "Maximum 4 images can be Added!", Toast.LENGTH_SHORT).show();
                 }
+                break;
+
+            case R.id.edit_delete_button:
+
+                deleteProduct();
+                break;
 
         }
+    }
+
+    private void deleteProduct() {
+
+        collectionReference.whereEqualTo("image1_url", bundle.getString("image1_url"))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            for(QueryDocumentSnapshot snapshot : task.getResult()) {
+
+                                snapshot.getReference().delete();
+                            }
+
+                            Toast.makeText(EditProduct.this, "Product deleted!", Toast.LENGTH_SHORT).show();
+
+                            startActivity(new Intent(EditProduct.this, MyProductList.class));
+
+                        }
+                    }
+                });
     }
 
     public void getPhoto()
@@ -226,7 +253,6 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
 
                                 snapshot.getReference().update("title",titleEditText.getText().toString().trim());
                                 snapshot.getReference().update("description", descriptionEditText.getText().toString().trim());
-                                snapshot.getReference().update("type", typeEditText.getText().toString().trim());
                                 snapshot.getReference().update("price", priceEditText.getText().toString().trim());
 
                                 snapshot.getReference().update("lastUpdated",getCurrentDate());
@@ -257,7 +283,7 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
 
     private void removeImage() {
 
-        Toast.makeText(this, imageList.get(currentImageIndex), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, imageList.get(currentImageIndex), Toast.LENGTH_SHORT).show();
 
         for(int i = currentImageIndex; i < mx-1; i++) {
             imageList.set(i,imageList.get(i+1));
@@ -323,7 +349,7 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
 
                                 mx++;
 
-                                Toast.makeText(EditProduct.this, imageUrl, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(EditProduct.this, imageUrl, Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override

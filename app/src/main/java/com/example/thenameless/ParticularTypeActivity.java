@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.thenameless.model.ProductDetails;
 import com.example.thenameless.view.RecyclerViewHome;
@@ -27,6 +30,8 @@ import java.util.List;
 public class ParticularTypeActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private TextView message;
 
     private String type;
 
@@ -66,6 +71,9 @@ public class ParticularTypeActivity extends AppCompatActivity {
                 }
             }
         };
+
+        progressBar = findViewById(R.id.particular_progressBar);
+        message = findViewById(R.id.particular_mess_textView);
 
         recyclerView = findViewById(R.id.particular_recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -108,6 +116,12 @@ public class ParticularTypeActivity extends AppCompatActivity {
                             recyclerViewHome = new RecyclerViewHome(ParticularTypeActivity.this, typeList);
 
                             recyclerView.setAdapter(recyclerViewHome);
+
+                            if(typeList.size() == 0) {
+                                message.setVisibility(View.VISIBLE);
+                            }
+
+                            progressBar.setVisibility(View.INVISIBLE);
 
                         }
                     }
@@ -162,6 +176,8 @@ public class ParticularTypeActivity extends AppCompatActivity {
 
         currentUser = firebaseAuth.getCurrentUser();
         firebaseAuth.addAuthStateListener(authStateListener);
+
+        progressBar.setVisibility(View.VISIBLE);
 
         selectParticularType(type);
 

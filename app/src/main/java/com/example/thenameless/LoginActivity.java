@@ -226,6 +226,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 namelesser.setUserName(account.getDisplayName());
                                 Toast.makeText(LoginActivity.this, account.getDisplayName(), Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, HomePage.class));
+                                finish();
                             }
                         }
                     }

@@ -97,7 +97,8 @@ public class AccountDetails extends AppCompatActivity {
         else if (type == 3)
         {
             getDetails();
-            //updateInfo();
+            //Toast.makeText(this, "Don't forget to Update details!", Toast.LENGTH_SHORT).show();
+            updateInfo();
         }
         else {
             getDetails();
@@ -170,7 +171,7 @@ public class AccountDetails extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AccountDetails.this,"Unable to retrieve Information  :(",Toast.LENGTH_LONG).show();
+                        Toast.makeText(AccountDetails.this,"Unable to retrieve Information :(",Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -209,7 +210,7 @@ public class AccountDetails extends AppCompatActivity {
         userDetails.put("PhoneNo",Namelesser.getInstance().getUserNumber());
         userDetails.put("Sem",semEditText.getText().toString());
         userDetails.put("ProfileImg",imageUrl);
-        Toast.makeText(this, imageUrl, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, imageUrl, Toast.LENGTH_SHORT).show();
 
         db.collection("AccountDetails").document(currentUser.getUid())
                 .set(userDetails)
@@ -218,7 +219,7 @@ public class AccountDetails extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(AccountDetails.this, "Details Updated Successfully!!!!!", Toast.LENGTH_SHORT).show();
 //                        progressBar.setVisibility(View.INVISIBLE);
-
+                        startActivity(new Intent(AccountDetails.this, HomePage.class));
                         finish();
                     }
                 })
@@ -277,7 +278,7 @@ public class AccountDetails extends AppCompatActivity {
                             public void onSuccess(Uri uri) {
                                 imageUrl=uri.toString();
                                 Log.d("Img url",imageUrl);
-                                Toast.makeText(AccountDetails.this, "Profile Pic Updated Successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AccountDetails.this, "Profile Pic Updated Successfully!", Toast.LENGTH_SHORT).show();
 //
                                 Picasso.get()
                                         .load(imageUrl)
@@ -292,7 +293,7 @@ public class AccountDetails extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         profileImageProgressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(AccountDetails.this,"Unable to change the Profile Picture",Toast.LENGTH_LONG).show();
+                        Toast.makeText(AccountDetails.this,"Unable to change the Profile Picture!",Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -301,6 +302,8 @@ public class AccountDetails extends AppCompatActivity {
     public void verifyPhoneNumber(View view) {
 
         startActivity(new Intent(AccountDetails.this, EnterPhoneNumber.class));
+
+        finish();
 
 
 

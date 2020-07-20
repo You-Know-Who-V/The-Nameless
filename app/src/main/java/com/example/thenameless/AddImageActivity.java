@@ -160,7 +160,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
                     intent.putExtra("description",bundle.getString("description"));
 
                     for(int i=1;i<=imageUrlList.size();i++){
-                        Toast.makeText(this, "image" + i + "_url", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(this, "image" + i + "_url", Toast.LENGTH_SHORT).show();
                         intent.putExtra("image" + i + "_url", imageUrlList.get(i-1));
                     }
 
@@ -322,7 +322,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
 
                                 clearButton.setVisibility(View.VISIBLE);
 
-                                Toast.makeText(AddImageActivity.this, imageUrl, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(AddImageActivity.this, imageUrl, Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override

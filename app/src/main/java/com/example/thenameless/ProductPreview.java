@@ -37,6 +37,8 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Document;
 
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -47,9 +49,9 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
     private Bundle bundle;
 
     private TextView priceTextView, detailsTextView, userNameTextView, titleTextView;
-    TextView nameTextView,email,phno,branch;
-    ImageView profileImageView;
-    Dialog myDailog;
+    private TextView nameTextView,email,phno,branch;
+    private ImageView profileImageView, accImage;
+    private Dialog myDailog;
     private ImageButton previousImage, nextImage, favButton;
     private ImageView imageView;
 
@@ -75,6 +77,7 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
         previousImage = findViewById(R.id.preview_previous_imageButton);
         nextImage = findViewById(R.id.preview_next_imageButton);
         imageView = findViewById(R.id.preview_imageView);
+        accImage = findViewById(R.id.myProduct_acc_imageView);
 
         for(int i=1;i<=4;i++){
             if(bundle.getString("image" + i + "_url") == null){
@@ -99,7 +102,12 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
                                     + "\n\n" + "Date Added On: "
                                     + bundle.getString("timeAdded"));
         detailsTextView.setMovementMethod(new ScrollingMovementMethod());
-        priceTextView.setText(String.valueOf(bundle.getInt("price")));
+
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setMaximumFractionDigits(0);
+        format.setCurrency(Currency.getInstance("INR"));
+
+        priceTextView.setText(format.format(bundle.getInt("price")));
         userNameTextView.setText(bundle.getString("userName"));
 
         if(bundle.getString("image1_url") != null)
@@ -112,7 +120,7 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
                             if(task.getResult().size() == 1) {
                                 flag = 1;
                                 //Toast.makeText(context, String.valueOf(task.getResult().size()), Toast.LENGTH_SHORT).show();
-                                favButton.setBackgroundResource(R.drawable.ic_baseline_star_24);
+                                favButton.setBackgroundResource(R.drawable.ic_baseline_favorite_24);
                             }
                         }
                     }
@@ -121,6 +129,7 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
         nextImage.setOnClickListener(this);
         previousImage.setOnClickListener(this);
         favButton.setOnClickListener(this);
+        accImage.setOnClickListener(this);
 
     }
 
@@ -234,12 +243,20 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
                 else {
                     removeFavourite();
                 }
+                break;
             case R.id.preview_account_textView:
             {
                 myDailog=new Dialog(ProductPreview.this);
 
                 getDetails();
+
+                break;
             }
+            case R.id.myProduct_acc_imageView:
+                myDailog=new Dialog(ProductPreview.this);
+
+                getDetails();
+                break;
         }
 
     }
@@ -269,7 +286,7 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentReference> task) {
                                     if(task.isSuccessful()) {
-                                        favButton.setBackgroundResource(R.drawable.ic_baseline_star_24);
+                                        favButton.setBackgroundResource(R.drawable.ic_baseline_favorite_24);
                                     }
                                 }
                             });
@@ -288,7 +305,7 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
                                     for(QueryDocumentSnapshot snapshot : task.getResult()) {
                                         snapshot.getReference().delete();
                                     }
-                                    favButton.setBackgroundResource(R.drawable.ic_baseline_star_23);
+                                    favButton.setBackgroundResource(R.drawable.ic_baseline_favorite_25);
                                 }
                             }
                         });

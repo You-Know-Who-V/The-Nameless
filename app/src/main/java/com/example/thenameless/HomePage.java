@@ -17,7 +17,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.app.SearchManager;
 import android.widget.SearchView.OnQueryTextListener;
@@ -47,6 +49,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
     private static final String TAG = "Home Page";
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private TextView message;
 
     private List<ProductDetails> list = new ArrayList<>();
 
@@ -81,6 +85,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
             }
         };
 
+        message = findViewById(R.id.home_mess_textView);
+        progressBar = findViewById(R.id.home_progressBar);
         recyclerView = findViewById(R.id.home_recyclerView);
         recyclerView.setHasFixedSize(true);
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -138,18 +144,19 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                 Namelesser.getInstance().setUserId(null);
                 Namelesser.getInstance().setUserNumber(null);
                 MainActivity.mAuth.signOut();
-                finish();
+
                 startActivity(new Intent(HomePage.this, LoginActivity.class));
+                finish();
                 break;
 
             case R.id.cart: //Filter search result to show only books
-                Toast.makeText(this, "Cart Selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Cart Selected", Toast.LENGTH_SHORT).show();
 
                 startActivity(new Intent(HomePage.this, ShowFavourites.class));
                 break;
 
             case R.id.my_acc:   //Go to Account Settings
-                Toast.makeText(this, "My Account Selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "My Account Selected", Toast.LENGTH_SHORT).show();
 
                 Intent in = new Intent(HomePage.this, AccountDetails.class);
                 in.putExtra("type", "2");
@@ -159,14 +166,14 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
             case R.id.my_product:
 
-                Toast.makeText(this, "My Product Selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "My Product Selected", Toast.LENGTH_SHORT).show();
 
                 startActivity(new Intent(HomePage.this, MyProductList.class));
 
                 break;
 
             case R.id.books: //Filter search result to show only books
-                Toast.makeText(this, "Books Selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Books Selected", Toast.LENGTH_SHORT).show();
 
                 intent.putExtra("type", "Book");
 
@@ -174,7 +181,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                 break;
 
             case R.id.lab_coat: //Filter search result to show only Lab Coats
-                Toast.makeText(this, "Lab Coat Selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Lab Coat Selected", Toast.LENGTH_SHORT).show();
 
                 intent.putExtra("type", "Lab Coat");
 
@@ -182,7 +189,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                 break;
 
             case R.id.instrument: //Filter search result to show only Instrument
-                Toast.makeText(this, "Instrument Selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Instrument Selected", Toast.LENGTH_SHORT).show();
 
                 intent.putExtra("type", "Instrument");
 
@@ -190,7 +197,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                 break;
 
             case R.id.sports: //Filter search result to show only Sports
-                Toast.makeText(this, "Sports Selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Sports Selected", Toast.LENGTH_SHORT).show();
 
                 intent.putExtra("type", "Sports");
 
@@ -198,7 +205,7 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                 break;
 
             case R.id.other_category: //Filter search result to show only books
-                Toast.makeText(this, "Other Category Selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Other Category Selected", Toast.LENGTH_SHORT).show();
 
                 intent.putExtra("type", "Other category");
 
@@ -219,6 +226,10 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                 if(Namelesser.getInstance().getUserNumber() == null) {
                     Toast.makeText(this, "Verify Phone Number to add Product!", Toast.LENGTH_SHORT).show();
                 }
+                else if (Namelesser.getInstance().getUserName() == null
+                    || Namelesser.getInstance().getUserId() == null) {
+                    Toast.makeText(this, "Enter your details in My Account to add Product!", Toast.LENGTH_SHORT).show();
+                }
                 else
                     startActivity(new Intent(HomePage.this, ProductTypesListActivity.class));
                 break;
@@ -231,6 +242,8 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
         currentUser = firebaseAuth.getCurrentUser();
         firebaseAuth.addAuthStateListener(authStateListener);
+
+        progressBar.setVisibility(View.VISIBLE);
 
 
 
@@ -264,6 +277,12 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
                             recyclerViewHome = new RecyclerViewHome(HomePage.this, list);
 
                             recyclerView.setAdapter(recyclerViewHome);
+
+                            if(list.size() == 0) {
+                                message.setVisibility(View.VISIBLE);
+                            }
+
+                            progressBar.setVisibility(View.INVISIBLE);
                             //recyclerView.notify();
                         }
                     }

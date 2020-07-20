@@ -30,20 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"/>
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Type:"
-        android:textSize="16sp"/>
-
-    <EditText
-        android:id="@+id/typeEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
+        android:hint="Title"
         android:inputType="textPersonName"/>
 
     <TextView
@@ -57,9 +44,8 @@
         android:id="@+id/descriptionEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:maxLines="10"
-        android:inputType="textPersonName"/>
+        android:hint="Description"/>
 
     <TextView
         android:id="@+id/textView7"
@@ -73,6 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Price"
         android:inputType="numberDecimal"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -145,9 +132,13 @@
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:text="Update"/>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_delete_button"
+        android:text="delete"/>
 
 
 </LinearLayout>
