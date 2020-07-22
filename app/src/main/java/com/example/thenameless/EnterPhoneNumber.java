@@ -21,6 +21,8 @@ public class EnterPhoneNumber extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_phone_number);
 
+        setTitle("Enter Phone Number");
+
         nextButton = findViewById(R.id.enter_next_button);
         phoneNumber = findViewById(R.id.phoneNumber_editText);
         countryCode = findViewById(R.id.countryCode);

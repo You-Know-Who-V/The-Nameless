@@ -59,6 +59,8 @@ public class MyProductList extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        setTitle("My Products");
+
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -155,6 +157,7 @@ public class MyProductList extends AppCompatActivity {
         if(item.getItemId()==R.id.myProduct_close)
         {
             startActivity(new Intent(MyProductList.this,HomePage.class));
+            finish();
             return true;
         }
         return false;

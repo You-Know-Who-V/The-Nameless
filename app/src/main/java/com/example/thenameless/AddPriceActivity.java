@@ -59,6 +59,7 @@ public class AddPriceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_price);
 
+        setTitle("Add Price");
         firebaseAuth = FirebaseAuth.getInstance();
 
         bundle = getIntent().getExtras();
@@ -120,6 +121,7 @@ public class AddPriceActivity extends AppCompatActivity {
                                     Toast.makeText(AddPriceActivity.this, "Product added!", Toast.LENGTH_SHORT).show();
                                     progressBar.setVisibility(View.INVISIBLE);
                                     startActivity(new Intent(AddPriceActivity.this, HomePage.class));
+                                    finish();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -149,6 +151,7 @@ public class AddPriceActivity extends AppCompatActivity {
         if(item.getItemId()==R.id.cancel)
         {
             startActivity(new Intent(AddPriceActivity.this,HomePage.class));
+            finish();
             return true;
         }
         return false;

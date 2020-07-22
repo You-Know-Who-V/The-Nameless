@@ -64,6 +64,7 @@ public class AccountDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_details);
 
+        setTitle("Account Details");
         mAuth = FirebaseAuth.getInstance();
 
         profileImageProgressBar = findViewById(R.id.detail_imageProgressBar);
@@ -119,6 +120,7 @@ public class AccountDetails extends AppCompatActivity {
         if(item.getItemId()==R.id.change_pass)
         {
             startActivity(new Intent(AccountDetails.this,ChangePassword.class));
+            finish();
             return true;
         }
         else if(item.getItemId()== R.id.logout)
@@ -131,6 +133,7 @@ public class AccountDetails extends AppCompatActivity {
             MainActivity.mAuth.signOut();
             finish();
             startActivity(new Intent(AccountDetails.this, LoginActivity.class));
+            finish();
             return true;
         }
         return false;
@@ -236,6 +239,7 @@ public class AccountDetails extends AppCompatActivity {
     {
         Intent intent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent,GET_IMAGE_CODE);
+        //finish();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

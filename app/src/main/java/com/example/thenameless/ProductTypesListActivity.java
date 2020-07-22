@@ -26,6 +26,8 @@ public class ProductTypesListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_types);
 
+        setTitle("Select Type");
+
         listView = findViewById(R.id.product_listView);
 
         productList = new ProductType().getProductTypes();

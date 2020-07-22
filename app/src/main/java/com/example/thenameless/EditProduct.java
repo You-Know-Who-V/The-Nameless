@@ -74,6 +74,8 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_edit_product);
         bundle = getIntent().getExtras();
 
+        setTitle("Edit Product");
+
         storageReference = FirebaseStorage.getInstance().getReference();
 
         priceEditText=findViewById(R.id.priceEditText);

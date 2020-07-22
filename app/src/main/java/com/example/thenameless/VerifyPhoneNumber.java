@@ -42,6 +42,7 @@ public class VerifyPhoneNumber extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_phone_number);
 
+        setTitle("Verify Number");
         mAuth = FirebaseAuth.getInstance();
 
         phoneNumber = Objects.requireNonNull(getIntent().getExtras()).getString("phoneNumber");

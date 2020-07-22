@@ -50,6 +50,8 @@ public class ShowFavourites extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_favourites);
 
+        setTitle("Favourites");
+
         progressBar = findViewById(R.id.fav_progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
@@ -151,6 +153,7 @@ public class ShowFavourites extends AppCompatActivity {
         if(item.getItemId()==R.id.cancel)
         {
             startActivity(new Intent(ShowFavourites.this,HomePage.class));
+            finish();
             return true;
         }
         return false;

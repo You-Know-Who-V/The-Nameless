@@ -67,6 +67,8 @@ public class ProductPreview extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_preview);
 
+        setTitle("Preview");
+
         bundle = getIntent().getExtras();
 
         priceTextView = findViewById(R.id.preview_price_textView);

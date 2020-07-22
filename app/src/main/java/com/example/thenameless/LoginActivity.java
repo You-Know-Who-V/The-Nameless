@@ -63,6 +63,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mAuth=FirebaseAuth.getInstance();
 
+        setTitle("LogIn");
+
         emailEditText = findViewById(R.id.login_email_editText);
         passwordEditText = findViewById(R.id.login_password_editText);
         signInButton = findViewById(R.id.login_signIn_button);
@@ -158,6 +160,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             //Toast.makeText(LoginActivity.this, "Username: "+ namelesser.getUserName(), Toast.LENGTH_SHORT).show();
 
                                             startActivity(new Intent(LoginActivity.this, HomePage.class));
+                                            finish();
                                         }
                                     });
                         } else {

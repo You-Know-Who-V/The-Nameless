@@ -28,6 +28,7 @@ public class AddDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_details);
 
+        setTitle("Add details");
         bundle = getIntent().getExtras();
 
         progressBar = findViewById(R.id.details_progressBar);
@@ -74,6 +75,7 @@ public class AddDetailsActivity extends AppCompatActivity {
         if(item.getItemId()==R.id.cancel)
         {
             startActivity(new Intent(AddDetailsActivity.this,HomePage.class));
+            finish();
             return true;
         }
         return false;

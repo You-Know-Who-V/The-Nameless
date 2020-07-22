@@ -75,6 +75,8 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_image);
 
+        setTitle("Add Images");
+
         currentUserName = Namelesser.getInstance().getUserName();
         currentUserId = Namelesser.getInstance().getUserId();
 
@@ -165,6 +167,7 @@ public class AddImageActivity extends AppCompatActivity implements View.OnClickL
                     }
 
                     startActivity(intent);
+
 
                 }
                 else{

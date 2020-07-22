@@ -57,6 +57,8 @@ public class ParticularTypeActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         type = bundle.getString("type");
 
+        setTitle(type);
+
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {

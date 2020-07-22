@@ -29,6 +29,7 @@ public class ChangePassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
 
+        setTitle("Change Password");
         user= FirebaseAuth.getInstance().getCurrentUser();
 
         currentPasswordEditText=findViewById(R.id.currentTextPassword);
