@@ -264,6 +264,7 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
                             Toast.makeText(EditProduct.this, "Product updated!", Toast.LENGTH_SHORT).show();
 
                             startActivity(new Intent(EditProduct.this, MyProductList.class));
+                            finish();
 
                         }
                     }
@@ -384,6 +385,7 @@ public class EditProduct extends AppCompatActivity implements View.OnClickListen
         if(item.getItemId()==R.id.cancel)
         {
             startActivity(new Intent(EditProduct.this,MyProductList.class));
+            finish();
             return true;
         }
         return false;
