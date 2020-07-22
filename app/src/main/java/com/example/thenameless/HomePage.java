@@ -294,4 +294,10 @@ public class HomePage extends AppCompatActivity implements View.OnClickListener 
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        return;
+    }
 }

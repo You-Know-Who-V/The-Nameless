@@ -117,13 +117,7 @@ public class AccountDetails extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
 
-        if(item.getItemId()==R.id.change_pass)
-        {
-            startActivity(new Intent(AccountDetails.this,ChangePassword.class));
-            finish();
-            return true;
-        }
-        else if(item.getItemId()== R.id.logout)
+        if(item.getItemId()== R.id.logout)
         {
 
             Namelesser.getInstance().setUserMail(null);

@@ -65,9 +65,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         setTitle("LogIn");
 
-        emailEditText = findViewById(R.id.login_email_editText);
-        passwordEditText = findViewById(R.id.login_password_editText);
-        signInButton = findViewById(R.id.login_signIn_button);
+//        emailEditText = findViewById(R.id.login_email_editText);
+//        passwordEditText = findViewById(R.id.login_password_editText);
+//        signInButton = findViewById(R.id.login_signIn_button);
         progressBar = findViewById(R.id.login_progressBar);
         signInButtonGoogle = findViewById(R.id.login_googleSignIn_button);
 
@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        signInButton.setOnClickListener(this);
+        //signInButton.setOnClickListener(this);
         signInButtonGoogle.setOnClickListener(this);
     }
 
@@ -104,21 +104,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         switch (view.getId()){
 
-            case R.id.login_signIn_button:
-                //login into acc.
-                if(!TextUtils.isEmpty(emailEditText.getText().toString().trim())
-                        && !TextUtils.isEmpty(passwordEditText.getText().toString().trim())) {
-
-                    progressBar.setVisibility(View.VISIBLE);
-
-                    accountLogIn(emailEditText.getText().toString().trim(),
-                            passwordEditText.getText().toString().trim());
-                }
-                else{
-                    Toast.makeText(this, "Empty Fields Not Allowed!", Toast.LENGTH_SHORT).show();
-                }
-
-                break;
+//            case R.id.login_signIn_button:
+//                //login into acc.
+//                if(!TextUtils.isEmpty(emailEditText.getText().toString().trim())
+//                        && !TextUtils.isEmpty(passwordEditText.getText().toString().trim())) {
+//
+//                    progressBar.setVisibility(View.VISIBLE);
+//
+//                    accountLogIn(emailEditText.getText().toString().trim(),
+//                            passwordEditText.getText().toString().trim());
+//                }
+//                else{
+//                    Toast.makeText(this, "Empty Fields Not Allowed!", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                break;
             case R.id.login_googleSignIn_button:
                 progressBar.setVisibility(View.VISIBLE);
                 signIn();
@@ -132,48 +132,48 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void accountLogIn(String email, String password) {
-
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                            progressBar.setVisibility(View.INVISIBLE);
-
-                            currentUser = mAuth.getCurrentUser();
-
-                            collectionReference.whereEqualTo("userId",currentUser.getUid())
-                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
-                                            Namelesser namelesser = Namelesser.getInstance();
-
-                                            for(QueryDocumentSnapshot snapshot : queryDocumentSnapshots){
-
-                                                namelesser.setUserId(currentUser.getUid());
-                                                namelesser.setUserName(snapshot.getString("userName"));
-
-                                            }
-                                            //Toast.makeText(LoginActivity.this, "Username: "+ namelesser.getUserName(), Toast.LENGTH_SHORT).show();
-
-                                            startActivity(new Intent(LoginActivity.this, HomePage.class));
-                                            finish();
-                                        }
-                                    });
-                        } else {
-
-                            progressBar.setVisibility(View.INVISIBLE);
-
-                            Toast.makeText(LoginActivity.this, "Login Failed!!! Try Again", Toast.LENGTH_SHORT).show();
-
-                            passwordEditText.setText("");
-                        }
-                    }
-                });
-    }
+//    private void accountLogIn(String email, String password) {
+//
+//        mAuth.signInWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//
+//                            progressBar.setVisibility(View.INVISIBLE);
+//
+//                            currentUser = mAuth.getCurrentUser();
+//
+//                            collectionReference.whereEqualTo("userId",currentUser.getUid())
+//                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                                        @Override
+//                                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//
+//                                            Namelesser namelesser = Namelesser.getInstance();
+//
+//                                            for(QueryDocumentSnapshot snapshot : queryDocumentSnapshots){
+//
+//                                                namelesser.setUserId(currentUser.getUid());
+//                                                namelesser.setUserName(snapshot.getString("userName"));
+//
+//                                            }
+//                                            //Toast.makeText(LoginActivity.this, "Username: "+ namelesser.getUserName(), Toast.LENGTH_SHORT).show();
+//
+//                                            startActivity(new Intent(LoginActivity.this, HomePage.class));
+//                                            finish();
+//                                        }
+//                                    });
+//                        } else {
+//
+//                            progressBar.setVisibility(View.INVISIBLE);
+//
+//                            Toast.makeText(LoginActivity.this, "Login Failed!!! Try Again", Toast.LENGTH_SHORT).show();
+//
+//                            passwordEditText.setText("");
+//                        }
+//                    }
+//                });
+//    }
 
     @Override
     protected void onStart() {
@@ -227,7 +227,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 Namelesser namelesser = Namelesser.getInstance();
                                 namelesser.setUserId(currentUser.getUid());
                                 namelesser.setUserName(account.getDisplayName());
-                                Toast.makeText(LoginActivity.this, account.getDisplayName(), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(LoginActivity.this, account.getDisplayName(), Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, HomePage.class));
                                 finish();
                             }
