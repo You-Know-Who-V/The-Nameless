@@ -14,8 +14,9 @@ Picasoo is used for image loading.
 * Java
 * Android Studio
 
-### Team Member
+### Team Members
 
-[Hrujul Thummar](https://github.com/HrujulThumar22)
+* [Raj Gondalia](https://github.com/raj-gondalia)
+* [Hrujul Thummar](https://github.com/HrujulThumar22)
 
 P.S.: Going to add better UI and some new functionality in future.
